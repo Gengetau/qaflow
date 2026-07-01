@@ -60,7 +60,19 @@ public class WorkspaceMember {
     return workspace;
   }
 
+  public User getUser() {
+    return user;
+  }
+
   public WorkspaceRole getRole() {
     return role;
+  }
+
+  public void setRole(WorkspaceRole role) {
+    this.role = role;
+  }
+
+  public OffsetDateTime getJoinedAt() {
+    return joinedAt;
   }
 }

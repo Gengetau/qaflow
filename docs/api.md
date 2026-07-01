@@ -14,12 +14,14 @@ Auth tokens use `Authorization: Bearer <accessToken>`. Refresh tokens are stored
 
 ## Workspaces
 
-- `GET /api/workspaces`
-- `POST /api/workspaces`
-- `GET /api/workspaces/{workspaceId}`
-- `POST /api/workspaces/{workspaceId}/members`
-- `PATCH /api/workspaces/{workspaceId}/members/{memberId}`
-- `DELETE /api/workspaces/{workspaceId}/members/{memberId}`
+- `GET /api/workspaces`: list workspaces where the current user is a member.
+- `POST /api/workspaces`: create a workspace and assign the current user as `OWNER`.
+- `GET /api/workspaces/{workspaceId}`: return workspace details and members; requires membership.
+- `POST /api/workspaces/{workspaceId}/members`: add an existing user by email; requires `OWNER`.
+- `PATCH /api/workspaces/{workspaceId}/members/{memberId}`: change a member role; requires `OWNER` and keeps at least one owner.
+- `DELETE /api/workspaces/{workspaceId}/members/{memberId}`: remove a member; requires `OWNER` and keeps at least one owner.
+
+Workspace roles are `OWNER`, `TESTER`, and `VIEWER`. Backend permission checks enforce membership on protected workspace resources. `OWNER` can manage workspace members, `OWNER` and `TESTER` can pass test-artifact write checks, and `VIEWER` is read-only.
 
 ## Projects And Test Assets
 

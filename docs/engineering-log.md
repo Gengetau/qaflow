@@ -168,3 +168,29 @@ Notes:
 
 Next loop:
 - Loop 7: RBAC and Security.
+
+## Loop 7: RBAC and Security
+
+Implemented:
+- Added reusable `PermissionService` for workspace membership checks, owner-only workspace management, and owner/tester test-artifact write authorization.
+- Added workspace listing, creation, detail, member add, member role update, and member removal APIs.
+- Enforced OWNER / TESTER / VIEWER backend role rules for workspace member management and read access.
+- Added uniform `ResponseStatusException` mapping to the existing `ApiError` response shape.
+- Added RBAC integration coverage for owner member management, viewer write denial, non-member denial, and tester test-artifact permission.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=RbacSecurityIntegrationTest test` failed before implementation because `PermissionService` and workspace APIs did not exist.
+- Green: `./mvnw.cmd -Dtest=RbacSecurityIntegrationTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- pass
+
+Notes:
+- Backend checks were run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows named-pipe environment, so `DatabaseMigrationTest` remains skipped via `disabledWithoutDocker`.
+- Local untracked diagnostic log files were left untouched and are not part of this loop.
+
+Next loop:
+- Loop 8: Auth Frontend.
