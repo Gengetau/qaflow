@@ -15,6 +15,10 @@ public interface TestCaseRepository
 
   boolean existsByProject_IdAndCaseKeyAndIdNot(UUID projectId, String caseKey, UUID id);
 
+  long countByProject_Id(UUID projectId);
+
+  long countByProject_IdAndStatus(UUID projectId, TestCaseStatus status);
+
   @EntityGraph(attributePaths = {"steps", "suite", "project", "createdBy", "updatedBy"})
   @Query("select testCase from TestCase testCase where testCase.id = :id")
   Optional<TestCase> findDetailedById(@Param("id") UUID id);

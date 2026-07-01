@@ -463,3 +463,28 @@ Notes:
 
 Next loop:
 - Loop 18: Dashboard and Reports Backend.
+
+## Loop 18: Dashboard and Reports Backend
+
+Implemented:
+- Added project dashboard aggregate endpoint with case totals, ready cases, active runs, latest pass rate, open/critical defects, defect status counts, and latest run result counts.
+- Added report summary endpoint with latest run metrics and defect distribution.
+- Added test run report endpoint with execution totals, failed cases, pass rate, and linked defects.
+- Added HTML report export endpoint returning print-friendly `text/html`.
+- Added backend integration coverage for dashboard metrics, report payloads, HTML generation, and unauthorized access.
+- Updated API docs for dashboard and report endpoints.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=ReportControllerIntegrationTest test` failed with 404 before report APIs existed.
+- Green: `./mvnw.cmd -Dtest=ReportControllerIntegrationTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- Pass: backend tests and verify completed with 11 tests, 0 failures, 1 Docker-dependent Testcontainers migration test skipped in the local Windows environment.
+
+Notes:
+- Backend checks are run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+
+Next loop:
+- Loop 19: Dashboard and Reports Frontend.

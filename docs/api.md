@@ -77,4 +77,8 @@ Allowed attachment content types are `image/png`, `image/jpeg`, `image/webp`, `a
 ## Reports
 
 - `GET /api/projects/{projectId}/dashboard`
+- `GET /api/projects/{projectId}/reports/summary`
+- `GET /api/projects/{projectId}/reports/test-run/{testRunId}`
 - `POST /api/projects/{projectId}/reports/export`
+
+Dashboard returns project-level case counts, active run count, latest pass rate, open/critical defect counts, defect status distribution, and latest run result counts. Report summary returns the same project summary with latest run details. Test run report returns execution totals, pass rate, failed cases, and linked defects. HTML export returns a print-friendly `text/html` report.
