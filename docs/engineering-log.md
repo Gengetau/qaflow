@@ -194,3 +194,29 @@ Notes:
 
 Next loop:
 - Loop 8: Auth Frontend.
+
+## Loop 8: Auth Frontend
+
+Implemented:
+- Added a frontend auth API client for login, registration, and logout token revocation.
+- Reworked the Pinia auth store to persist access token, refresh token, current user, active workspace, and role in `localStorage`.
+- Added route guards so protected `/app/*` routes redirect unauthenticated users to `/auth/login` and authenticated users see the app shell.
+- Converted login and registration pages from static forms into real submit flows.
+- Updated the app shell to display authenticated workspace, user, and role state.
+- Added a Vite `/api` dev proxy to the Spring Boot backend and documented frontend auth development.
+
+Checks run:
+- Red: `pnpm test` failed before implementation because `login`, `restoreSession`, and `createQaflowRouter` did not exist.
+- Green: `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- pass
+
+Notes:
+- Frontend auth uses `/api` by default. In local Vite development, requests are proxied to `http://localhost:8080`.
+
+Next loop:
+- Loop 9: Projects and Test Suites Backend.

@@ -27,3 +27,18 @@ Expected Java output should report Temurin/OpenJDK 21.x for both `java` and `jav
 ## Docker And Testcontainers
 
 Docker Desktop may be reachable from the Docker CLI while Testcontainers cannot use the Windows named-pipe endpoint from Java. Docker-dependent tests should use `@Testcontainers(disabledWithoutDocker = true)` so they run in compatible Docker environments and skip locally when Java cannot access Docker.
+## Frontend Auth Development
+
+The Vue dev server proxies `/api` requests to `http://localhost:8080`, so the frontend auth pages can call the Spring Boot API without hard-coded browser URLs.
+
+Run the backend first, then the frontend:
+
+```powershell
+cd apps/api
+.\mvnw.cmd spring-boot:run
+
+cd apps/web
+pnpm dev
+```
+
+Login and registration store the access token, refresh token, current user, and workspace membership in browser local storage under `qaflow.auth`.

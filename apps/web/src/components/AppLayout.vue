@@ -1,13 +1,28 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { RouterLink, useRouter } from "vue-router";
+import { useAuthStore } from "../app/stores/auth";
+
 const navigationItems = [
-  "dashboard",
-  "projects",
-  "test cases",
-  "test runs",
-  "defects",
-  "reports",
-  "settings"
+  { label: "dashboard", to: "/app/dashboard" },
+  { label: "projects", to: "/app/projects" },
+  { label: "test cases", to: "/app/projects/demo/test-cases" },
+  { label: "test runs", to: "/app/projects/demo/test-runs" },
+  { label: "defects", to: "/app/projects/demo/defects" },
+  { label: "reports", to: "/app/projects/demo/reports" },
+  { label: "settings", to: "/app/settings" }
 ];
+
+const auth = useAuthStore();
+const router = useRouter();
+const { activeWorkspace, role, user } = storeToRefs(auth);
+const workspaceName = computed(() => activeWorkspace.value?.name ?? "QAFlow Workspace");
+
+async function logout() {
+  await auth.logout();
+  await router.push("/auth/login");
+}
 </script>
 
 <template>
@@ -22,9 +37,9 @@ const navigationItems = [
       </div>
 
       <nav class="navigation" aria-label="Primary">
-        <a v-for="item in navigationItems" :key="item" href="#">
-          {{ item }}
-        </a>
+        <RouterLink v-for="item in navigationItems" :key="item.to" :to="item.to">
+          {{ item.label }}
+        </RouterLink>
       </nav>
     </aside>
 
@@ -32,11 +47,12 @@ const navigationItems = [
       <header class="topbar">
         <div>
           <span class="eyebrow">Workspace</span>
-          <h1>Acme Quality Lab</h1>
+          <h1>{{ workspaceName }}</h1>
         </div>
         <div class="topbar-actions">
-          <span class="role-pill">OWNER</span>
-          <button type="button">New test run</button>
+          <span class="role-pill">{{ role ?? "VIEWER" }}</span>
+          <span class="user-label">{{ user?.displayName }}</span>
+          <button type="button" @click="logout">Log out</button>
         </div>
       </header>
 

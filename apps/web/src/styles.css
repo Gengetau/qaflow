@@ -31,6 +31,11 @@ button {
   padding: 0.65rem 0.9rem;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -135,6 +140,12 @@ button {
 .role-pill {
   background: #ecfeff;
   color: #155e75;
+}
+
+.user-label {
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .content {
@@ -348,4 +359,19 @@ button {
   .table-row span:last-child {
     grid-column: 2;
   }
+}
+
+.auth-link {
+  color: #155e75;
+  font-weight: 800;
+  text-align: center;
+}
+
+.form-error {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #991b1b;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
 }
