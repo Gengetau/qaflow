@@ -1,6 +1,6 @@
 # Roadmap
 
-QAFlow is built in small verified loops. The current project is feature-complete enough for a portfolio review, with one final quality pass remaining.
+QAFlow is built in small verified loops. The current project has completed the v1.0 quality pass and is portfolio-ready.
 
 ## Completed
 
@@ -18,16 +18,8 @@ QAFlow is built in small verified loops. The current project is feature-complete
 | E2E | Done | Playwright browser tests for core user flows with deterministic API fixtures. |
 | Docker/local DX | Done | One-command compose stack, nginx web image, health checks, `.env.example`, smoke scripts. |
 | Documentation | Done | README, architecture, API, data model, testing, screenshots placeholders, and roadmap. |
-
-## Next
-
-| Area | Goal |
-| --- | --- |
-| Quality pass | Run all backend, frontend, Docker, and smoke checks in one final pass. |
-| Error polish | Review user-facing API and UI error states for clarity and consistency. |
-| Dead-code pass | Remove stale code, unused comments, and outdated documentation claims. |
-| Secrets check | Confirm no local credentials, generated secrets, or private artifacts are committed. |
-| Release | Add final CI badge confirmation and tag `v1.0.0` when the project is portfolio-ready. |
+| v1.0 quality pass | Done | Full backend, frontend, Playwright, Docker smoke, secrets, dead-code, and docs checks completed. |
+| Release readiness | Done | README CI badge is present and `v1.0.0` is ready to tag after the loop commit passes CI. |
 
 ## Later Ideas
 

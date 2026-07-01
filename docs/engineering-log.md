@@ -653,3 +653,46 @@ Result:
 
 Next loop:
 - Loop 25: Quality Pass and v1.0.
+
+## Loop 25: Quality Pass and v1.0
+
+Implemented:
+- Confirmed the CI frontend job installs pnpm before `actions/setup-node` enables `cache: pnpm`.
+- Ran the full backend verification suite with Java 21.
+- Ran the full frontend quality gate: dependency install, lint, typecheck, unit tests, production build, and Playwright E2E.
+- Ran Docker Compose build/start and smoke checks against the real PostgreSQL, Spring Boot API, and nginx-served frontend stack.
+- Scanned for committed secrets and found only documented demo/dev/test credentials.
+- Scanned for dead-code markers, debug statements, focused tests, and stale documentation language.
+- Confirmed the README CI badge is present and reviewer-facing docs match the implemented behavior.
+
+Checks run:
+- `cd apps/api; .\mvnw.cmd verify`
+- `cd apps/web; pnpm install --frozen-lockfile`
+- `cd apps/web; pnpm lint`
+- `cd apps/web; pnpm typecheck`
+- `cd apps/web; pnpm test`
+- `cd apps/web; pnpm build`
+- `cd apps/web; pnpm e2e`
+- `docker compose up --build -d`
+- `.\scripts\dev-smoke.ps1`
+- Browser smoke against `http://localhost:5173/auth/login`
+- `docker compose down`
+- Secret-pattern scan across source, docs, scripts, workflow, compose, and env example files.
+- Dead-code/debug scan across source, docs, scripts, workflow, compose, and env example files.
+- Documentation stale-term scan across README and docs.
+
+Result:
+- Pass: backend verify completed with 13 tests, 0 failures, and 1 local Docker-dependent Testcontainers migration test skipped.
+- Pass: frontend unit tests completed with 10 files and 21 tests.
+- Pass: Playwright completed 3 browser E2E tests.
+- Pass: Docker Compose build/up, API health, web root, demo login, and real browser login worked.
+- Pass: no real secrets, debug statements, focused tests, or stale documentation claims were found.
+
+Notes:
+- Backend commands were run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot use Docker Desktop from Java in this Windows named-pipe environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+- The only secret-like matches were expected demo/dev/test values such as `password123`, local datasource defaults, and test JWT secrets.
+- QAFlow is ready for the `v1.0.0` release tag after CI passes on this loop commit.
+
+Next loop:
+- No additional loop is defined in the current project loop document after v1.0.

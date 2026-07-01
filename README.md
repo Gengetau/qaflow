@@ -8,7 +8,7 @@ It is built as a portfolio-grade internal QA tool, not a toy CRUD app. The targe
 
 ## Current Status
 
-The core workflow is implemented end to end: authentication, workspace roles, project and suite management, test cases with steps, test runs, failed-run defects, evidence attachments, dashboard/report APIs, generated OpenAPI client coverage, demo seed data, browser E2E tests, Docker Compose startup, and CI.
+The core workflow is implemented end to end: authentication, workspace roles, project and suite management, test cases with steps, test runs, failed-run defects, evidence attachments, dashboard/report APIs, generated OpenAPI client coverage, demo seed data, browser E2E tests, Docker Compose startup, CI, and the final v1.0 quality pass.
 
 ## What It Demonstrates
 
@@ -17,6 +17,7 @@ The core workflow is implemented end to end: authentication, workspace roles, pr
 - Non-trivial persistence: workspace-scoped uniqueness, ordered suites/steps, cascades, attachment metadata, and Flyway migrations.
 - Reporting: dashboard aggregates, latest run quality metrics, failed-case lists, linked defects, and HTML export.
 - Operational polish: Java 21, Docker Compose, nginx-served frontend image, seeded demo profile, local smoke scripts, CI gates, and documented test strategy.
+- Release readiness: the README includes the CI badge, all loop quality gates have passed locally, and the project is ready for the `v1.0.0` tag once the final CI run is green.
 
 ## Quick Start
 
