@@ -20,6 +20,10 @@ uploads/
 .env
 .env.local
 
+# Local planning docs
+qaflow-design---*.md
+qaflow-loop---*.md
+
 # OS
 Thumbs.db
 .DS_Store
