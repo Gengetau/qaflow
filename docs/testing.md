@@ -2,6 +2,19 @@
 
 QAFlow uses layered automated checks.
 
+## Command Matrix
+
+| Scope | Command | Notes |
+| --- | --- | --- |
+| Backend unit/integration | `cd apps/api; .\mvnw.cmd test` | Uses Java 21. Testcontainers migration test skips locally when Docker is not available to Java. |
+| Backend package | `cd apps/api; .\mvnw.cmd verify` | Runs tests and builds the Spring Boot jar. |
+| Frontend unit/components | `cd apps/web; pnpm test` | Vitest and Vue Test Utils. Playwright specs are excluded from Vitest. |
+| Frontend type/lint | `cd apps/web; pnpm lint; pnpm typecheck` | Both currently run `vue-tsc --noEmit`. |
+| Frontend build | `cd apps/web; pnpm build` | Runs `vue-tsc --noEmit` and Vite build. |
+| Browser E2E | `cd apps/web; pnpm e2e` | Playwright with deterministic API route fixtures. |
+| Compose config | `docker compose config` | CI validates compose syntax and interpolation. |
+| Full-stack smoke | `.\scripts\dev-up.ps1 -Detached; .\scripts\dev-smoke.ps1` | Requires Docker Desktop. Checks API health, web root, and demo login. |
+
 ## Backend
 
 - JUnit 5 unit tests for services.
@@ -39,3 +52,13 @@ CI currently runs frontend lint, typecheck, Vitest, and build. Playwright remain
 .\scripts\dev-up.ps1 -Detached
 .\scripts\dev-smoke.ps1
 ```
+
+## CI
+
+GitHub Actions runs three jobs on push and pull request:
+
+- `backend`: Temurin Java 21 and Maven tests.
+- `frontend`: pnpm install, lint, typecheck, Vitest, and build.
+- `docker`: `docker compose config`.
+
+The frontend job installs pnpm before `actions/setup-node` enables `cache: pnpm`, because setup-node expects pnpm to be available when resolving the cache store.

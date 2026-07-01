@@ -2,6 +2,28 @@
 
 All API routes use the `/api` prefix.
 
+## Conventions
+
+- Protected routes require `Authorization: Bearer <accessToken>`.
+- JSON request bodies use `Content-Type: application/json`.
+- Paginated list responses use `{ items, totalItems, totalPages, page, size }`.
+- Validation and authorization failures return structured JSON errors from the global exception handler.
+- OpenAPI JSON is available at `/v3/api-docs`; Swagger UI is available at `/swagger-ui.html`.
+- The committed snapshot is `openapi/qaflow.openapi.json`.
+
+Typical error shape:
+
+```json
+{
+  "code": "VALIDATION_FAILED",
+  "message": "Request validation failed",
+  "status": 400,
+  "path": "/api/projects",
+  "timestamp": "2026-07-01T00:00:00Z",
+  "fieldViolations": []
+}
+```
+
 ## Auth
 
 - `POST /api/auth/register`: create a user, default workspace, OWNER membership, access token, and refresh token.
@@ -82,3 +104,16 @@ Allowed attachment content types are `image/png`, `image/jpeg`, `image/webp`, `a
 - `POST /api/projects/{projectId}/reports/export`
 
 Dashboard returns project-level case counts, active run count, latest pass rate, open/critical defect counts, defect status distribution, and latest run result counts. Report summary returns the same project summary with latest run details. Test run report returns execution totals, pass rate, failed cases, and linked defects. HTML export returns a print-friendly `text/html` report.
+
+## Frontend Client Workflow
+
+After backend API changes:
+
+```powershell
+Invoke-WebRequest http://localhost:8080/v3/api-docs -OutFile openapi/qaflow.openapi.json
+cd apps/web
+pnpm api:generate
+pnpm typecheck
+```
+
+Generated code lives in `apps/web/src/app/api/generated/`. Hand-written frontend API modules should stay thin and prefer generated request/response types where practical.

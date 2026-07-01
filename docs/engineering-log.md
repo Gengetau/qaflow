@@ -631,3 +631,25 @@ Notes:
 
 Next loop:
 - Loop 24: Documentation Polish.
+
+## Loop 24: Documentation Polish
+
+Implemented:
+- Expanded README with CI badge, current status, feature depth, reviewer quick start, docs index, and roadmap summary.
+- Added screenshot capture placeholders in `docs/screenshots.md`.
+- Added `docs/roadmap.md` with completed slices, final quality-pass work, and later ideas.
+- Expanded architecture docs with backend modules, runtime topology, security model, data boundaries, and why QAFlow is not toy CRUD.
+- Expanded data model docs with entity purposes, relationships, state machines, constraints, and reporting data.
+- Expanded API docs with conventions, error shape, OpenAPI snapshot workflow, and frontend client workflow.
+- Expanded testing docs with command matrix, CI job responsibilities, Playwright scope, and full-stack smoke commands.
+
+Checks run:
+- Documentation consistency search for stale terms.
+- `docker compose config`
+
+Result:
+- Pass: reviewer-facing docs now explain how to run the project, what is implemented, and why the system has real workflow complexity beyond CRUD.
+- Pass: compose config still validates after documentation updates.
+
+Next loop:
+- Loop 25: Quality Pass and v1.0.

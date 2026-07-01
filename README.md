@@ -1,12 +1,22 @@
 # QAFlow
 
+[![CI](https://github.com/Gengetau/qaflow/actions/workflows/ci.yml/badge.svg)](https://github.com/Gengetau/qaflow/actions/workflows/ci.yml)
+
 QAFlow is a full-stack QA management platform for organizing test cases, executing test runs, tracking defects, attaching evidence, and generating project quality reports.
 
 It is built as a portfolio-grade internal QA tool, not a toy CRUD app. The target stack is Java 21 + Spring Boot, Vue 3 + TypeScript, PostgreSQL, Flyway, JWT/RBAC, Docker Compose, and automated quality gates.
 
 ## Current Status
 
-This repository is being built from the supplied `qaflow-design` and `qaflow-loop` documents. The first implementation slice establishes the monorepo, backend health endpoint, PostgreSQL/Flyway baseline, frontend shell, Docker Compose, CI, and documentation scaffolding.
+The core workflow is implemented end to end: authentication, workspace roles, project and suite management, test cases with steps, test runs, failed-run defects, evidence attachments, dashboard/report APIs, generated OpenAPI client coverage, demo seed data, browser E2E tests, Docker Compose startup, and CI.
+
+## What It Demonstrates
+
+- Stateful QA workflows: planned/in-progress/completed test runs, run item results, and defect lifecycle transitions.
+- Real authorization: `OWNER`, `TESTER`, and `VIEWER` roles are enforced in backend services, not only in the UI.
+- Non-trivial persistence: workspace-scoped uniqueness, ordered suites/steps, cascades, attachment metadata, and Flyway migrations.
+- Reporting: dashboard aggregates, latest run quality metrics, failed-case lists, linked defects, and HTML export.
+- Operational polish: Java 21, Docker Compose, nginx-served frontend image, seeded demo profile, local smoke scripts, CI gates, and documented test strategy.
 
 ## Quick Start
 
@@ -19,6 +29,8 @@ docker compose up --build
 
 The compose stack starts PostgreSQL, the Spring Boot API with the `dev,demo` profiles, and the built Vue app served by nginx.
 
+Open the app at http://localhost:5173 and log in with `owner@example.com` / `password123`.
+
 PowerShell helpers are also available:
 
 ```powershell
@@ -26,6 +38,13 @@ PowerShell helpers are also available:
 .\scripts\dev-up.ps1 -Detached
 .\scripts\dev-smoke.ps1
 .\scripts\dev-down.ps1
+```
+
+For a quick reviewer pass:
+
+```powershell
+.\scripts\dev-up.ps1 -Detached
+.\scripts\dev-smoke.ps1
 ```
 
 Local backend:
@@ -90,9 +109,19 @@ apps/
   api/      Spring Boot API
   web/      Vue 3 SPA
 docs/       Architecture, API, data model, testing, engineering log
-docker/     Runtime configuration
+openapi/    Committed OpenAPI snapshot
 scripts/    Local automation helpers
 ```
+
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [API](docs/api.md)
+- [Data model](docs/data-model.md)
+- [Development](docs/development.md)
+- [Testing](docs/testing.md)
+- [Roadmap](docs/roadmap.md)
+- [Screenshots](docs/screenshots.md)
 
 ## Main Workflows
 
@@ -126,13 +155,14 @@ Generated client code lives in `apps/web/src/app/api/generated/`. Frontend servi
 
 ## Roadmap
 
-The implementation follows the loop backlog in the supplied prompt:
+See [docs/roadmap.md](docs/roadmap.md) for the full project roadmap. Current completed slices include:
 
-- Scaffold, backend health, PostgreSQL/Flyway, frontend shell, CI
-- Auth, refresh tokens, workspace membership, RBAC
-- Projects, suites, test cases, and steps
-- Test runs, execution workflow, defects, comments, attachments
-- Dashboard, reports, OpenAPI client, seed data, E2E, Docker polish
+- Foundation: monorepo, health endpoint, PostgreSQL/Flyway, frontend shell, Docker Compose, CI.
+- Identity and access: auth, refresh tokens, workspace membership, RBAC.
+- QA assets: projects, suites, test cases, and ordered steps.
+- Execution: test runs, item results, failed-item defect creation.
+- Risk and reporting: defects, comments, attachments, dashboard, reports, OpenAPI client.
+- Delivery polish: demo seed data, Playwright E2E, Docker/local DX, documentation.
 
 ## Quality Gates
 

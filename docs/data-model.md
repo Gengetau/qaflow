@@ -1,24 +1,45 @@
 # Data Model
 
-The target model follows the supplied design document.
+The data model is workspace-scoped and workflow-oriented. It is designed to support authorization, test execution state, defect linkage, evidence files, dashboard aggregation, and report export.
 
-Core entities:
+## Core Entities
 
-- User
-- Workspace
-- WorkspaceMember
-- Project
-- TestSuite
-- TestCase
-- TestCaseStep
-- TestRun
-- TestRunItem
-- Defect
-- DefectComment
-- Attachment
-- ActivityLog
+| Entity | Purpose |
+| --- | --- |
+| `User` | Login identity and display profile. |
+| `Workspace` | Tenant boundary for projects and membership. |
+| `WorkspaceMember` | User-to-workspace role assignment. |
+| `Project` | QA initiative under a workspace. |
+| `TestSuite` | Ordered grouping for test cases inside a project. |
+| `TestCase` | Reusable verification asset. |
+| `TestCaseStep` | Ordered action/expected-result step under a test case. |
+| `TestRun` | Execution instance planned from selected test cases. |
+| `TestRunItem` | Snapshot of a test case inside one run, with execution result. |
+| `Defect` | Project risk item, optionally linked to a failed run item. |
+| `DefectComment` | Discussion note on a defect. |
+| `Attachment` | Evidence file metadata linked to a defect or run item. |
+| `ActivityLog` | Project activity/audit event foundation. |
 
-Key constraints:
+## Relationships
+
+| Relationship | Cardinality |
+| --- | --- |
+| Workspace -> WorkspaceMember | One workspace has many members. |
+| User -> WorkspaceMember | One user can belong to many workspaces. |
+| Workspace -> Project | One workspace has many projects. |
+| Project -> TestSuite | One project has many suites. |
+| Project -> TestCase | One project has many test cases. |
+| TestCase -> TestCaseStep | One test case has ordered steps. |
+| Project -> TestRun | One project has many runs. |
+| TestRun -> TestRunItem | One run has selected execution items. |
+| TestRunItem -> TestCase | Each item references the source case. |
+| Project -> Defect | One project has many defects. |
+| Defect -> TestRunItem | Optional link from a defect to a failed run item. |
+| Defect -> DefectComment | One defect has many comments. |
+| Project -> Attachment | One project owns all evidence metadata. |
+| Attachment -> Defect/TestRunItem | Exactly one evidence target is required. |
+
+## Key Constraints
 
 - Workspace slugs are unique.
 - Project keys are unique within a workspace.
@@ -43,3 +64,43 @@ Key constraints:
 - Attachment content types are limited to `image/png`, `image/jpeg`, `image/webp`, `application/pdf`, and `text/plain`.
 - Protected resources must be scoped through workspace membership.
 - Status transitions are enforced in the service layer and supported by database constraints where practical.
+
+## State Machines
+
+Test runs:
+
+```text
+PLANNED -> IN_PROGRESS -> COMPLETED
+```
+
+Only planned runs can have their details edited. Only in-progress runs can execute item results.
+
+Test run item results:
+
+```text
+UNTESTED -> PASSED | FAILED | BLOCKED | SKIPPED
+```
+
+Defects can be created from run items only after the item result is `FAILED`.
+
+Defects:
+
+```text
+OPEN -> IN_PROGRESS -> RESOLVED -> CLOSED
+RESOLVED -> REOPENED -> IN_PROGRESS
+CLOSED -> REOPENED -> IN_PROGRESS
+```
+
+## Reporting Data
+
+Dashboard and report responses aggregate across:
+
+- total and ready test cases
+- active and latest completed test runs
+- run item result counts
+- latest pass rate
+- open and critical defects
+- defect status distribution
+- failed cases and linked defects for a run report
+
+The model intentionally preserves run item snapshots so a historical run report still has the case key/title that was executed, even if the source test case changes later.
