@@ -33,5 +33,10 @@ Key constraints:
 - Test run execution items reference test cases and persist `UNTESTED`, `PASSED`, `FAILED`, `BLOCKED`, or `SKIPPED` results.
 - Test run item results can be changed only while the parent run is `IN_PROGRESS`.
 - Deleting a project cascades to its test runs and run items.
+- Defects belong to one project and may reference one failed test run item.
+- Defect severities are `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL`; priorities are `LOW`, `MEDIUM`, `HIGH`, and `URGENT`.
+- Defect states are `OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`, and `REOPENED`.
+- Defect comments belong to one defect and cascade when the defect is deleted.
+- Deleting a project cascades to its defects and comments.
 - Protected resources must be scoped through workspace membership.
 - Status transitions are enforced in the service layer and supported by database constraints where practical.

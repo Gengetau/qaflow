@@ -375,3 +375,30 @@ Notes:
 
 Next loop:
 - Loop 15: Defects Backend.
+
+## Loop 15: Defects Backend
+
+Implemented:
+- Added Defect and DefectComment JPA models with severity, priority, and status enums.
+- Added defect list, create, detail, update, comment, and transition APIs.
+- Added creation of defects from failed test run items and rejected creation from non-failed items.
+- Enforced defect state transitions in the service layer.
+- Added owner/tester write authorization and viewer read-only access for defects.
+- Added `V6__defects.sql` for defects and comments.
+- Updated API and data model docs for defect tracking.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=DefectControllerIntegrationTest test` failed with 404 before defect APIs existed.
+- Green: `./mvnw.cmd -Dtest=DefectControllerIntegrationTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- pass
+
+Notes:
+- Backend checks were run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 16: Defects Frontend.

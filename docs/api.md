@@ -53,10 +53,20 @@ Workspace roles are `OWNER`, `TESTER`, and `VIEWER`. Backend permission checks e
 
 Invalid test run transitions return `400`. `VIEWER` users can read run state but cannot create, update, start, complete, or execute runs.
 
-## Defects, Attachments, Reports
+## Defects
 
-- `POST /api/test-run-items/{itemId}/defects`
-- `GET /api/projects/{projectId}/defects`
+- `GET /api/projects/{projectId}/defects`: list defects for a project; requires workspace membership.
+- `POST /api/projects/{projectId}/defects`: create a project defect not linked to a run item; requires `OWNER` or `TESTER`.
+- `POST /api/test-run-items/{itemId}/defects`: create a defect linked to a failed run item; requires `OWNER` or `TESTER` and the run item result must be `FAILED`.
+- `GET /api/defects/{defectId}`: return defect detail with comments; requires workspace membership.
+- `PATCH /api/defects/{defectId}`: update title, description, severity, priority, and optional assignee; requires `OWNER` or `TESTER`.
+- `POST /api/defects/{defectId}/comments`: add a defect comment; requires `OWNER` or `TESTER`.
+- `POST /api/defects/{defectId}/transition`: transition defect state; requires `OWNER` or `TESTER`.
+
+Defect severities are `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL`. Priorities are `LOW`, `MEDIUM`, `HIGH`, and `URGENT`. State transitions are enforced in the service layer: `OPEN -> IN_PROGRESS -> RESOLVED -> CLOSED`, with `RESOLVED` or `CLOSED` allowed to move to `REOPENED`, and `REOPENED -> IN_PROGRESS`.
+
+## Attachments, Reports
+
 - `POST /api/attachments`
 - `GET /api/projects/{projectId}/dashboard`
 - `POST /api/projects/{projectId}/reports/export`
