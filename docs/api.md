@@ -25,13 +25,15 @@ Workspace roles are `OWNER`, `TESTER`, and `VIEWER`. Backend permission checks e
 
 ## Projects And Test Assets
 
-- `GET /api/projects`
-- `POST /api/projects`
-- `GET /api/projects/{projectId}`
-- `PATCH /api/projects/{projectId}`
-- `DELETE /api/projects/{projectId}`
-- `GET /api/projects/{projectId}/suites`
-- `POST /api/projects/{projectId}/suites`
+- `GET /api/projects?workspaceId={workspaceId}&page=0&size=20`: list projects for a workspace using `{ items, totalItems, totalPages, page, size }`; requires workspace membership.
+- `POST /api/projects`: create a project with `workspaceId`, `name`, `key`, and optional `description`; requires `OWNER`.
+- `GET /api/projects/{projectId}`: return project details; requires workspace membership.
+- `PATCH /api/projects/{projectId}`: update `name`, `description`, and `status`; requires `OWNER`.
+- `DELETE /api/projects/{projectId}`: delete a project; requires `OWNER`.
+- `GET /api/projects/{projectId}/suites`: list suites by `sortOrder` and `name`; requires workspace membership.
+- `POST /api/projects/{projectId}/suites`: create a suite with `name`, optional `description`, and `sortOrder`; requires `OWNER` or `TESTER`.
+- `PATCH /api/suites/{suiteId}`: update suite details; requires `OWNER` or `TESTER`.
+- `DELETE /api/suites/{suiteId}`: delete a suite; requires `OWNER` or `TESTER`.
 - `GET /api/projects/{projectId}/test-cases`
 - `POST /api/projects/{projectId}/test-cases`
 

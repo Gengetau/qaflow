@@ -220,3 +220,29 @@ Notes:
 
 Next loop:
 - Loop 9: Projects and Test Suites Backend.
+
+## Loop 9: Projects and Test Suites Backend
+
+Implemented:
+- Added Project and TestSuite JPA models, repositories, DTOs, services, and REST controllers.
+- Added paginated project listing with a shared `PageResponse` shape.
+- Added project membership authorization: workspace members can read, OWNER can manage projects, and OWNER/TESTER can manage suites.
+- Added activity log creation for project and suite create/update/delete actions.
+- Added `V3__test_management.sql` for test suites and kept project-related cascade delete behavior aligned between Flyway and Hibernate-generated test schemas.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=ProjectAndSuiteControllerIntegrationTest test` failed before project APIs existed.
+- Red: project list pagination assertion failed while the API still returned a bare array.
+- Green: `./mvnw.cmd -Dtest=ProjectAndSuiteControllerIntegrationTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- pass
+
+Notes:
+- Backend checks were run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows named-pipe environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 10: Projects and Test Suites Frontend.
