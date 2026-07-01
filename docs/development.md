@@ -62,6 +62,18 @@ pnpm dev
 
 Login and registration store the access token, refresh token, current user, and workspace membership in browser local storage under `qaflow.auth`.
 
+## Playwright E2E
+
+The E2E suite runs the real Vue app against Playwright API route fixtures, so it does not require Docker or a running backend:
+
+```powershell
+cd apps/web
+pnpm e2e:install
+pnpm e2e
+```
+
+The suite covers login, project and test case creation, failed test run item to defect creation, defect transitions, dashboard metrics, and report export preview.
+
 ## OpenAPI TypeScript Client
 
 The backend exposes OpenAPI JSON at:

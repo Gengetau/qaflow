@@ -11,6 +11,8 @@ node_modules/
 dist/
 coverage/
 .vite/
+apps/web/playwright-report/
+apps/web/test-results/
 
 # Runtime data
 data/

@@ -2,6 +2,11 @@
 import { storeToRefs } from "pinia";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import {
+  createDefectFromRunItem,
+  type DefectPriority,
+  type DefectSeverity
+} from "../app/api/defects";
 import { listTestCases, type TestCase } from "../app/api/testCases";
 import {
   completeTestRun,
@@ -31,11 +36,21 @@ const loadingCases = ref(false);
 const submitting = ref(false);
 const pageError = ref("");
 const createOpen = ref(false);
+const defectEditorOpen = ref(false);
+const defectSourceItem = ref<TestRunItem | null>(null);
+const createdDefectNotice = ref("");
 const resultNotes = reactive<Record<string, string>>({});
 
 const runForm = reactive({
   name: "",
   description: ""
+});
+
+const defectForm = reactive({
+  title: "",
+  description: "",
+  severity: "HIGH" as DefectSeverity,
+  priority: "URGENT" as DefectPriority
 });
 
 const canWrite = computed(() => role.value === "OWNER" || role.value === "TESTER");
@@ -189,6 +204,41 @@ async function markResult(item: TestRunItem, result: Exclude<TestRunItemResult, 
   }
 }
 
+function openDefectFromItem(item: TestRunItem) {
+  defectSourceItem.value = item;
+  defectForm.title = `${item.caseKey}: ${item.title}`;
+  defectForm.description = resultNotes[item.id] ?? item.actualResult ?? "";
+  defectForm.severity = "HIGH";
+  defectForm.priority = "URGENT";
+  defectEditorOpen.value = true;
+}
+
+async function saveDefectFromItem() {
+  if (!token.value || !defectSourceItem.value) {
+    return;
+  }
+
+  submitting.value = true;
+  pageError.value = "";
+  createdDefectNotice.value = "";
+  try {
+    const created = await createDefectFromRunItem(token.value, defectSourceItem.value.id, {
+      title: defectForm.title.trim(),
+      description: defectForm.description.trim(),
+      severity: defectForm.severity,
+      priority: defectForm.priority,
+      assigneeId: null
+    });
+    createdDefectNotice.value = `Defect created: ${created.title}`;
+    defectEditorOpen.value = false;
+    defectSourceItem.value = null;
+  } catch (error) {
+    pageError.value = error instanceof Error ? error.message : "Defect could not be created.";
+  } finally {
+    submitting.value = false;
+  }
+}
+
 async function mutateRun(action: () => Promise<TestRun>, fallbackMessage: string) {
   submitting.value = true;
   pageError.value = "";
@@ -219,6 +269,7 @@ function replaceRun(updatedRun: TestRun) {
     </div>
 
     <p v-if="pageError" class="form-error">{{ pageError }}</p>
+    <p v-if="createdDefectNotice" class="form-success" data-test="run-defect-notice">{{ createdDefectNotice }}</p>
 
     <div class="project-layout test-run-layout">
       <section class="table-surface">
@@ -355,6 +406,16 @@ function replaceRun(updatedRun: TestRun) {
                 >
                   {{ result }}
                 </button>
+                <button
+                  v-if="canWrite && item.result === 'FAILED'"
+                  class="secondary-button"
+                  :data-test="`create-defect-${item.id}`"
+                  type="button"
+                  :disabled="submitting"
+                  @click="openDefectFromItem(item)"
+                >
+                  Create defect
+                </button>
               </span>
             </div>
           </div>
@@ -410,6 +471,51 @@ function replaceRun(updatedRun: TestRun) {
         <div class="button-row end">
           <button class="secondary-button" type="button" @click="createOpen = false">Cancel</button>
           <button type="submit" :disabled="submitting || selectedCaseIds.length === 0">Create run</button>
+        </div>
+      </form>
+    </div>
+
+    <div v-if="defectEditorOpen" class="modal-backdrop">
+      <form class="modal defect-editor" data-test="run-item-defect-form" @submit.prevent="saveDefectFromItem">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Defect</p>
+            <h3>Create defect from failed item</h3>
+          </div>
+          <button class="ghost-button" type="button" @click="defectEditorOpen = false">Close</button>
+        </div>
+        <label>
+          Title
+          <input data-test="run-item-defect-title-input" v-model="defectForm.title" required maxlength="240" />
+        </label>
+        <label>
+          Description
+          <textarea data-test="run-item-defect-description-input" v-model="defectForm.description" rows="4" />
+        </label>
+        <div class="case-editor-grid">
+          <label>
+            Severity
+            <select data-test="run-item-defect-severity-input" v-model="defectForm.severity">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+              <option value="CRITICAL">CRITICAL</option>
+            </select>
+          </label>
+          <label>
+            Priority
+            <select data-test="run-item-defect-priority-input" v-model="defectForm.priority">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+              <option value="URGENT">URGENT</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="button-row end">
+          <button class="secondary-button" type="button" @click="defectEditorOpen = false">Cancel</button>
+          <button type="submit" :disabled="submitting">Save defect</button>
         </div>
       </form>
     </div>

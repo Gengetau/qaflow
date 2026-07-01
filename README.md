@@ -133,6 +133,10 @@ pnpm typecheck
 pnpm test
 pnpm build
 
+# Optional browser E2E gate
+pnpm e2e:install
+pnpm e2e
+
 cd ../..
 docker compose config
 ```

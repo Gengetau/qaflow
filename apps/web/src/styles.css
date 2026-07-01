@@ -1122,3 +1122,12 @@ button:disabled {
   margin: 0;
   padding: 0.65rem 0.75rem;
 }
+
+.form-success {
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  color: #166534;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+}

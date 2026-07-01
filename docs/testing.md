@@ -19,8 +19,18 @@ QAFlow uses layered automated checks.
 
 ## E2E
 
-Playwright will cover:
+Playwright covers browser-level user flows with the Vue dev server and deterministic API route fixtures:
 
 - Login -> create project -> create test case.
 - Create test run -> mark failed -> create defect.
 - Transition defect -> verify dashboard/report.
+
+Install the Chromium browser once, then run the E2E suite:
+
+```powershell
+cd apps/web
+pnpm e2e:install
+pnpm e2e
+```
+
+CI currently runs frontend lint, typecheck, Vitest, and build. Playwright is documented as a manual local gate until the Docker-backed full-stack startup is finalized.

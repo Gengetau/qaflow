@@ -10,10 +10,14 @@
   "scripts": {
     "api:generate": "node ./scripts/generate-openapi-client.mjs ../../openapi/qaflow.openapi.json ./src/app/api/generated/qaflowClient.ts",
     "dev": "vite --host 0.0.0.0",
+    "dev:e2e": "vite --host 127.0.0.1 --port 5173",
     "build": "vue-tsc --noEmit && vite build",
     "typecheck": "vue-tsc --noEmit",
     "lint": "vue-tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
+    "e2e:install": "playwright install chromium"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "latest",
@@ -22,6 +26,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tsconfig/node24": "latest",
     "@types/node": "latest",
     "@vue/test-utils": "latest",

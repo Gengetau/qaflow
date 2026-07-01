@@ -568,3 +568,32 @@ Notes:
 
 Next loop:
 - Loop 22: E2E Tests.
+
+## Loop 22: E2E Tests
+
+Implemented:
+- Added Playwright browser E2E coverage for login -> project creation -> ready test case creation.
+- Added Playwright browser E2E coverage for creating a test run, marking a run item failed, and creating a linked defect from that failed item.
+- Added Playwright browser E2E coverage for defect transitions feeding dashboard status metrics and report/export preview data.
+- Added a frontend action for creating a defect directly from a failed test run item.
+- Documented Playwright install/run commands as the manual E2E gate.
+
+Checks run:
+- Red: `pnpm e2e` initially failed because the API route mock also intercepted Vite source modules under `/src/app/api/*`.
+- Green: `pnpm e2e`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+- `docker compose config`
+
+Result:
+- Pass: frontend unit tests completed with 10 files and 21 tests.
+- Pass: Playwright completed 3 browser E2E tests.
+- Pass: frontend lint, typecheck, build, and Docker Compose validation.
+
+Notes:
+- CI continues to run the standard frontend gates. Playwright is documented as a manual local E2E gate until the full-stack Docker startup is finalized.
+
+Next loop:
+- Loop 23: Docker Polish and Local Full Stack.

@@ -237,4 +237,61 @@ describe("TestRunsPage", () => {
       "Coupon accepted"
     );
   });
+
+  it("creates a defect from a failed run item", async () => {
+    const failedRun = {
+      ...run,
+      items: [
+        {
+          ...run.items[1],
+          result: "FAILED",
+          actualResult: "Payment gateway returned 504.",
+          executedAt: "2026-07-01T00:13:00Z"
+        }
+      ]
+    };
+    const createdDefect = {
+      id: "defect-1",
+      projectId: "project-1",
+      testRunItemId: "item-2",
+      testCaseId: "case-2",
+      caseKey: "CHK-2",
+      title: "CHK-2: Coupon checkout succeeds",
+      description: "Payment gateway returned 504.",
+      severity: "HIGH",
+      priority: "URGENT",
+      status: "OPEN",
+      assigneeId: null,
+      reportedBy: "user-1",
+      createdAt: "2026-07-01T00:14:00Z",
+      updatedAt: "2026-07-01T00:14:00Z",
+      comments: []
+    };
+    const fetchMock = vi.fn((input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
+      const url = String(input);
+      if (url === "/api/projects/project-1/test-runs") {
+        return response([failedRun]);
+      }
+      if (url === "/api/test-run-items/item-2/defects" && init?.method === "POST") {
+        return response(createdDefect);
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const wrapper = await mountPage();
+    await wrapper.get('[data-test="create-defect-item-2"]').trigger("click");
+    await wrapper.get('[data-test="run-item-defect-title-input"]').setValue("CHK-2: Coupon checkout fails");
+    await wrapper.get('[data-test="run-item-defect-form"]').trigger("submit");
+    await flushPromises();
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/test-run-items/item-2/defects",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.stringContaining('"title":"CHK-2: Coupon checkout fails"')
+      })
+    );
+    expect(wrapper.get('[data-test="run-defect-notice"]').text()).toContain("Defect created");
+  });
 });
