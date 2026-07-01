@@ -27,6 +27,25 @@ Expected Java output should report Temurin/OpenJDK 21.x for both `java` and `jav
 ## Docker And Testcontainers
 
 Docker Desktop may be reachable from the Docker CLI while Testcontainers cannot use the Windows named-pipe endpoint from Java. Docker-dependent tests should use `@Testcontainers(disabledWithoutDocker = true)` so they run in compatible Docker environments and skip locally when Java cannot access Docker.
+
+## Demo Seed Profile
+
+Run the backend with the `demo` profile to seed local demo data:
+
+```powershell
+cd apps/api
+$env:SPRING_PROFILES_ACTIVE='dev,demo'
+.\mvnw.cmd spring-boot:run
+```
+
+The demo seed is idempotent and creates:
+
+- `owner@example.com` / `password123`
+- `tester@example.com` / `password123`
+- `viewer@example.com` / `password123`
+
+It also creates the `QAFlow Demo Workspace`, a `SHOP` storefront QA project, realistic suites, test cases, active and completed test runs, and open defects so dashboard/report views have useful data.
+
 ## Frontend Auth Development
 
 The Vue dev server proxies `/api` requests to `http://localhost:8080`, so the frontend auth pages can call the Spring Boot API without hard-coded browser URLs.

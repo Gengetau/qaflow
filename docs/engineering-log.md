@@ -543,3 +543,28 @@ Notes:
 
 Next loop:
 - Loop 21: Demo Data and Seed Workflow.
+
+## Loop 21: Demo Data and Seed Workflow
+
+Implemented:
+- Added a `demo` Spring profile seed runner for local demo data.
+- Seeded owner/tester/viewer demo accounts with `password123`.
+- Seeded `QAFlow Demo Workspace`, a `SHOP` storefront QA project, suites, six test cases, active and completed test runs, and linked defects.
+- Made the seed idempotent by skipping when the demo owner already exists.
+- Documented demo profile startup and demo login credentials in README and development docs.
+- Added backend coverage proving demo accounts, memberships, project data, and meaningful dashboard metrics are present under the `demo` profile.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=DemoDataSeederTest test` failed before demo data was seeded.
+- Green: `./mvnw.cmd -Dtest=DemoDataSeederTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- Pass: backend test/verify completed with 13 tests, 0 failures, 1 local Docker-dependent Testcontainers migration test skipped.
+
+Notes:
+- Backend checks are run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+
+Next loop:
+- Loop 22: E2E Tests.

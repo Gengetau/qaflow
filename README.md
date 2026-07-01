@@ -55,7 +55,15 @@ Do not switch the project target to Java 24; `apps/api/pom.xml` stays on Java 21
 
 ## Demo Accounts
 
-Seed data will provide these accounts once the auth and seed loops are complete:
+Run the backend with the `demo` profile to seed a realistic demo workspace, storefront QA project, test cases, test runs, defects, and report/dashboard metrics. The seed is idempotent and skips if the demo owner already exists.
+
+```powershell
+cd apps/api
+$env:SPRING_PROFILES_ACTIVE='dev,demo'
+./mvnw.cmd spring-boot:run
+```
+
+Demo login accounts:
 
 - `owner@example.com` / `password123`
 - `tester@example.com` / `password123`
