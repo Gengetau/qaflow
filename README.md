@@ -18,7 +18,7 @@ Local backend:
 
 ```powershell
 cd apps/api
-$env:JAVA_HOME='D:\jdk24\jdk-24.0.2'
+$env:JAVA_HOME='C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot'
 $env:Path="$env:JAVA_HOME\bin;$env:Path"
 ./mvnw.cmd test
 ./mvnw.cmd spring-boot:run
@@ -38,6 +38,20 @@ Default URLs:
 - Backend: http://localhost:8080
 - OpenAPI: http://localhost:8080/swagger-ui.html
 - PostgreSQL: localhost:5432
+
+## Java 21 Setup
+
+QAFlow targets Java 21. On Windows, install Eclipse Temurin 21 JDK and run backend commands with:
+
+```powershell
+winget install --id EclipseAdoptium.Temurin.21.JDK --exact
+$env:JAVA_HOME='C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot'
+$env:Path="$env:JAVA_HOME\bin;$env:Path"
+java -version
+javac -version
+```
+
+Do not switch the project target to Java 24; `apps/api/pom.xml` stays on Java 21.
 
 ## Demo Accounts
 
@@ -83,6 +97,7 @@ The implementation follows the loop backlog in the supplied prompt:
 ```powershell
 cd apps/api
 ./mvnw.cmd test
+./mvnw.cmd verify
 
 cd ../web
 pnpm lint
