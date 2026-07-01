@@ -1,0 +1,485 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "QAFlow API",
+    "description": "REST API for QAFlow test management workflows.",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local backend"
+    }
+  ],
+  "paths": {
+    "/api/projects/{projectId}/dashboard": {
+      "get": {
+        "operationId": "getDashboard",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project dashboard metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/reports/summary": {
+      "get": {
+        "operationId": "getReportSummary",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project report summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportSummaryResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/reports/test-run/{testRunId}": {
+      "get": {
+        "operationId": "getTestRunReport",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "testRunId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test run report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunReportResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/reports/export": {
+      "post": {
+        "operationId": "exportHtmlReport",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HTML quality report",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "DefectStatus": {
+        "type": "string",
+        "enum": ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED", "REOPENED"]
+      },
+      "TestRunItemResult": {
+        "type": "string",
+        "enum": ["UNTESTED", "PASSED", "FAILED", "BLOCKED", "SKIPPED"]
+      },
+      "TestRunStatus": {
+        "type": "string",
+        "enum": ["PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]
+      },
+      "DashboardResponse": {
+        "type": "object",
+        "required": [
+          "totalTestCases",
+          "readyTestCases",
+          "activeTestRuns",
+          "latestPassRate",
+          "openDefects",
+          "criticalDefects",
+          "defectsByStatus",
+          "testResults"
+        ],
+        "properties": {
+          "totalTestCases": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "readyTestCases": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activeTestRuns": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "latestPassRate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "openDefects": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "criticalDefects": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "defectsByStatus": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "testResults": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "RunSummary": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "totalCases",
+          "passed",
+          "failed",
+          "blocked",
+          "skipped",
+          "passRate",
+          "startedAt",
+          "completedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TestRunStatus"
+          },
+          "totalCases": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "passed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "blocked": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skipped": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "passRate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ReportSummaryResponse": {
+        "type": "object",
+        "required": [
+          "projectId",
+          "projectName",
+          "totalTestCases",
+          "readyTestCases",
+          "latestRun",
+          "openDefects",
+          "criticalDefects",
+          "defectsByStatus"
+        ],
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectName": {
+            "type": "string"
+          },
+          "totalTestCases": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "readyTestCases": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "latestRun": {
+            "$ref": "#/components/schemas/RunSummary",
+            "nullable": true
+          },
+          "openDefects": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "criticalDefects": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "defectsByStatus": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "FailedCase": {
+        "type": "object",
+        "required": ["testRunItemId", "testCaseId", "caseKey", "title", "actualResult"],
+        "properties": {
+          "testRunItemId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "testCaseId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseKey": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "actualResult": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "LinkedDefect": {
+        "type": "object",
+        "required": ["id", "testRunItemId", "caseKey", "title", "severity", "priority", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "testRunItemId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseKey": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH", "URGENT"]
+          },
+          "status": {
+            "$ref": "#/components/schemas/DefectStatus"
+          }
+        }
+      },
+      "TestRunReportResponse": {
+        "type": "object",
+        "required": [
+          "projectId",
+          "projectName",
+          "testRunId",
+          "testRunName",
+          "startedAt",
+          "completedAt",
+          "totalCases",
+          "passed",
+          "failed",
+          "blocked",
+          "skipped",
+          "passRate",
+          "failedCases",
+          "linkedDefects",
+          "generatedAt"
+        ],
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectName": {
+            "type": "string"
+          },
+          "testRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "testRunName": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "totalCases": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "passed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "blocked": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skipped": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "passRate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FailedCase"
+            }
+          },
+          "linkedDefects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkedDefect"
+            }
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

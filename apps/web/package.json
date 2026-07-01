@@ -8,6 +8,7 @@
     "node": ">=22 <25"
   },
   "scripts": {
+    "api:generate": "node ./scripts/generate-openapi-client.mjs ../../openapi/qaflow.openapi.json ./src/app/api/generated/qaflowClient.ts",
     "dev": "vite --host 0.0.0.0",
     "build": "vue-tsc --noEmit && vite build",
     "typecheck": "vue-tsc --noEmit",

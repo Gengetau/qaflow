@@ -42,3 +42,27 @@ pnpm dev
 ```
 
 Login and registration store the access token, refresh token, current user, and workspace membership in browser local storage under `qaflow.auth`.
+
+## OpenAPI TypeScript Client
+
+The backend exposes OpenAPI JSON at:
+
+```text
+http://localhost:8080/v3/api-docs
+```
+
+After backend API contract changes, run the backend and refresh the committed snapshot:
+
+```powershell
+Invoke-WebRequest http://localhost:8080/v3/api-docs -OutFile openapi/qaflow.openapi.json
+```
+
+Then regenerate the frontend client:
+
+```powershell
+cd apps/web
+pnpm api:generate
+pnpm typecheck
+```
+
+Generated files live under `apps/web/src/app/api/generated/`. Keep hand-written API modules thin by re-exporting or wrapping generated operations where practical.

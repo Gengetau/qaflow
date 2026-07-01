@@ -511,3 +511,35 @@ Result:
 
 Next loop:
 - Loop 20: OpenAPI TypeScript Client.
+
+## Loop 20: OpenAPI TypeScript Client
+
+Implemented:
+- Added bearer JWT security metadata to backend OpenAPI output.
+- Added backend coverage for `/v3/api-docs`, API metadata, bearer security scheme, and dashboard path exposure.
+- Added a committed OpenAPI snapshot for dashboard/report operations.
+- Added a dependency-free frontend OpenAPI client generator and `pnpm api:generate`.
+- Generated `qaflowClient.ts` with typed dashboard/report operations and reused it from the reports API module.
+- Documented the OpenAPI snapshot refresh and TypeScript client generation workflow in README and development docs.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=OpenApiDocumentationTest test` failed before bearer JWT security scheme existed.
+- Red: `pnpm exec vitest run src/app/api/generated/qaflowClient.spec.ts` failed before the generated client existed.
+- Green: `./mvnw.cmd -Dtest=OpenApiDocumentationTest test`
+- Green: `pnpm exec vitest run src/app/api/generated/qaflowClient.spec.ts`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+- `pnpm api:generate`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- Pass: backend test/verify completed with 12 tests, 0 failures, 1 local Docker-dependent Testcontainers migration test skipped; frontend generation, tests, typecheck, and build completed successfully.
+
+Notes:
+- Backend checks are run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+
+Next loop:
+- Loop 21: Demo Data and Seed Workflow.

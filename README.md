@@ -82,6 +82,26 @@ scripts/    Local automation helpers
 - Upload evidence attachments.
 - Review dashboard metrics and export reports.
 
+## API Contract Workflow
+
+The backend exposes OpenAPI at `http://localhost:8080/v3/api-docs` and Swagger UI at `http://localhost:8080/swagger-ui.html`.
+
+Refresh the committed OpenAPI snapshot after backend API changes:
+
+```powershell
+Invoke-WebRequest http://localhost:8080/v3/api-docs -OutFile openapi/qaflow.openapi.json
+```
+
+Generate the TypeScript API client used by the frontend:
+
+```powershell
+cd apps/web
+pnpm api:generate
+pnpm typecheck
+```
+
+Generated client code lives in `apps/web/src/app/api/generated/`. Frontend service modules should prefer re-exporting or wrapping generated operations instead of duplicating request types.
+
 ## Roadmap
 
 The implementation follows the loop backlog in the supplied prompt:
