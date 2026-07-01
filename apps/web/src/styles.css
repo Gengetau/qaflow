@@ -321,6 +321,11 @@ button:disabled {
   color: #991b1b;
 }
 
+.priority.urgent {
+  background: #ffe4e6;
+  color: #9f1239;
+}
+
 .execution-panel {
   display: grid;
   gap: 1rem;
@@ -346,6 +351,22 @@ button:disabled {
 .status.in_progress {
   background: #fef3c7;
   color: #92400e;
+}
+
+.status.open,
+.status.reopened {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status.resolved {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.status.closed {
+  background: #e5e7eb;
+  color: #374151;
 }
 
 .status.completed {
@@ -375,6 +396,134 @@ button:disabled {
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   padding: 0.8rem;
+}
+
+.defect-workspace {
+  display: grid;
+  gap: 1rem;
+}
+
+.defect-board {
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  overflow-x: auto;
+  padding-bottom: 0.1rem;
+}
+
+.defect-board section {
+  min-width: 180px;
+}
+
+.board-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.board-heading span {
+  background: #f1f5f9;
+  border-radius: 999px;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.2rem 0.5rem;
+}
+
+.defect-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  color: inherit;
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.defect-card:hover,
+.defect-card.selected {
+  background: #ecfeff;
+  border-color: #67e8f9;
+}
+
+.defect-card strong,
+.defect-card small {
+  display: block;
+}
+
+.defect-card small {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.defect-detail-panel {
+  min-width: 0;
+}
+
+.defect-detail-heading {
+  align-items: flex-start;
+}
+
+.defect-meta-grid {
+  border-top: 1px solid #e5e7eb;
+}
+
+.defect-transition-row {
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+.defect-transition-row label,
+.comment-form label {
+  color: #334155;
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 800;
+}
+
+.defect-transition-row select,
+.comment-form textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #17202a;
+  min-height: 42px;
+  padding: 0.55rem 0.7rem;
+}
+
+.comment-section {
+  border-top: 1px solid #e5e7eb;
+}
+
+.flush-heading {
+  padding-bottom: 0.5rem;
+}
+
+.compact-empty {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.comment-row {
+  border-top: 1px solid #e5e7eb;
+  color: #334155;
+  padding: 0.8rem 1rem;
+}
+
+.comment-form {
+  border-top: 1px solid #e5e7eb;
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.defect-editor {
+  max-width: 720px;
+  width: min(100%, 720px);
 }
 
 .auth-page {

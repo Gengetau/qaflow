@@ -402,3 +402,30 @@ Notes:
 
 Next loop:
 - Loop 16: Defects Frontend.
+
+## Loop 16: Defects Frontend
+
+Implemented:
+- Added a typed defects API client for list, detail, project defect creation, run-item defect creation, update, comments, and status transition calls.
+- Replaced the static defects page with a project defect board grouped by `OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`, and `REOPENED`.
+- Added a defect detail panel with severity, priority, linked run item state, comments, and lifecycle transition controls.
+- Added project-level defect create and edit UI for `OWNER` and `TESTER` roles.
+- Added the `/app/defects/:defectId` route for direct defect detail access.
+- Added frontend tests for defect loading, board grouping, create/edit, transition, and comments.
+
+Checks run:
+- Red: `pnpm exec vitest run src/pages/DefectsPage.spec.ts` failed while the page still rendered static sample data.
+- Green: `pnpm exec vitest run src/pages/DefectsPage.spec.ts`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- pass
+
+Notes:
+- Frontend checks were run under the local Windows Node 22 environment. The GitHub workflow validates the same app under Node 24.
+
+Next loop:
+- Loop 17: Attachments.
