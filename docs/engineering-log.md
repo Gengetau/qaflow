@@ -297,3 +297,28 @@ Notes:
 
 Next loop:
 - Loop 12: Test Cases Frontend.
+
+## Loop 12: Test Cases Frontend
+
+Implemented:
+- Added a test case API client for listing, detail, create, and update calls.
+- Replaced the static test cases page with a project-scoped table, detail panel, filters, and case editor.
+- Added a steps editor that supports ordered action/expected-result rows.
+- Added frontend tests covering table/detail loading, useful filtering, and creating/editing test cases with steps.
+
+Checks run:
+- Red: `pnpm exec vitest run src/pages/TestCasesPage.spec.ts` failed while the page still rendered static sample data and had no filter/editor controls.
+- Green: `pnpm exec vitest run src/pages/TestCasesPage.spec.ts`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- pass
+
+Notes:
+- Frontend checks were run under the local Windows Node 22 environment. The GitHub workflow still validates the same app under Node 24.
+
+Next loop:
+- Loop 13: Test Runs Backend.
