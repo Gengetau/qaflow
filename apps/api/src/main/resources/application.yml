@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: qaflow-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/qaflow}
+    username: ${SPRING_DATASOURCE_USERNAME:qaflow}
+    password: ${SPRING_DATASOURCE_PASSWORD:qaflow}
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+server:
+  port: 8080
+
+qaflow:
+  upload-root: ${QAFLOW_UPLOAD_ROOT:data/uploads}
+  security:
+    jwt-secret: ${QAFLOW_JWT_SECRET:dev-only-change-this-secret-dev-only-change-this-secret}
+    access-token-minutes: 15
+    refresh-token-days: 7

@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: qaflow
+      POSTGRES_USER: qaflow
+      POSTGRES_PASSWORD: qaflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qaflow -d qaflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./apps/api
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/qaflow
+      SPRING_DATASOURCE_USERNAME: qaflow
+      SPRING_DATASOURCE_PASSWORD: qaflow
+      QAFLOW_UPLOAD_ROOT: /app/data/uploads
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/app/data/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./apps/web
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  uploads:

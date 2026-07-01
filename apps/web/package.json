@@ -1,0 +1,33 @@
+{
+  "name": "qaflow-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.14.0",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "vue-tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "latest",
+    "pinia": "latest",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@tsconfig/node24": "latest",
+    "@types/node": "latest",
+    "@vue/test-utils": "latest",
+    "jsdom": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vitest": "latest",
+    "vue-tsc": "latest"
+  }
+}

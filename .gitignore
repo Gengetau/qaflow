@@ -1,0 +1,23 @@
+.idea/
+.vscode/
+
+# Java
+target/
+*.class
+*.log
+
+# Node
+node_modules/
+dist/
+coverage/
+.vite/
+
+# Runtime data
+data/
+uploads/
+.env
+.env.local
+
+# OS
+Thumbs.db
+.DS_Store
