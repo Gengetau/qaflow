@@ -337,6 +337,27 @@ button:disabled {
   font-size: 2rem;
 }
 
+.status.planned,
+.status.untested {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.status.in_progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.cancelled {
+  background: #e5e7eb;
+  color: #374151;
+}
+
 .kanban {
   display: grid;
   gap: 1rem;
@@ -537,6 +558,133 @@ button:disabled {
   padding-bottom: 0.65rem;
 }
 
+.test-run-layout {
+  grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1.45fr);
+}
+
+.run-row {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) 140px 90px;
+}
+
+.run-row small,
+.run-row strong,
+.run-item-row small,
+.run-item-row strong,
+.case-picker-row small,
+.case-picker-row strong {
+  display: block;
+}
+
+.run-row small,
+.run-item-row small,
+.case-picker-row small {
+  color: #64748b;
+}
+
+.run-detail-panel {
+  min-width: 0;
+}
+
+.run-detail-heading {
+  align-items: flex-start;
+}
+
+.run-progress {
+  border-top: 1px solid #e5e7eb;
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+}
+
+.run-progress > div:first-child {
+  align-items: baseline;
+  display: flex;
+  gap: 0.65rem;
+}
+
+.run-progress strong {
+  font-size: 2rem;
+}
+
+.run-progress span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.progress-track {
+  background: #e5e7eb;
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress-track span {
+  background: #0f766e;
+  display: block;
+  height: 100%;
+}
+
+.run-metrics {
+  border-left: 0;
+  border-radius: 0;
+  border-right: 0;
+  box-shadow: none;
+}
+
+.run-item-row {
+  align-items: center;
+  grid-template-columns: minmax(160px, 1fr) 110px minmax(180px, 1fr) minmax(240px, 1.2fr);
+}
+
+.run-item-row textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #17202a;
+  min-height: 64px;
+  padding: 0.55rem 0.7rem;
+  width: 100%;
+}
+
+.result-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.result-button-row button {
+  font-size: 0.72rem;
+  padding: 0.42rem 0.5rem;
+}
+
+.run-create-modal {
+  max-width: 720px;
+  width: min(100%, 720px);
+}
+
+.case-picker-list {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  display: grid;
+  overflow: hidden;
+}
+
+.case-picker-row {
+  align-items: center;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 22px minmax(0, 1fr) 96px;
+  padding: 0.75rem;
+}
+
+.case-picker-row + .case-picker-row {
+  border-top: 1px solid #e5e7eb;
+}
+
+.case-picker-row input {
+  min-height: auto;
+}
+
 .secondary-button,
 .ghost-button,
 .ghost-danger-button,
@@ -650,7 +798,10 @@ button:disabled {
   .project-row,
   .suite-row,
   .case-row,
-  .step-row {
+  .step-row,
+  .run-row,
+  .run-item-row,
+  .case-picker-row {
     grid-template-columns: 88px minmax(0, 1fr);
   }
 
@@ -660,7 +811,8 @@ button:disabled {
 
   .case-filter-bar,
   .case-editor-grid,
-  .step-editor {
+  .step-editor,
+  .result-button-row {
     grid-template-columns: 1fr;
   }
 

@@ -348,3 +348,30 @@ Notes:
 
 Next loop:
 - Loop 14: Test Run Execution Frontend.
+
+## Loop 14: Test Run Execution Frontend
+
+Implemented:
+- Added a test run API client for listing runs, creating runs, starting/completing runs, listing items, and updating item results.
+- Replaced the static test runs page with a project-scoped run list and execution detail screen.
+- Added a create-run flow that loads ready test cases and submits selected case IDs.
+- Added per-item result controls for `PASSED`, `FAILED`, `BLOCKED`, and `SKIPPED`.
+- Added progress and result-count summaries that update when execution results change.
+- Added frontend tests for run loading/progress, run creation, and execution result updates.
+
+Checks run:
+- Red: `pnpm exec vitest run src/pages/TestRunsPage.spec.ts` failed while the page still rendered static sample data.
+- Green: `pnpm exec vitest run src/pages/TestRunsPage.spec.ts`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- pass
+
+Notes:
+- Frontend checks were run under the local Windows Node 22 environment. The GitHub workflow validates the same app under Node 24.
+
+Next loop:
+- Loop 15: Defects Backend.
