@@ -18,6 +18,7 @@ export function createQaflowRouter(history: RouterHistory = createWebHistory()) 
       { path: "/auth/login", component: LoginPage, meta: { guestOnly: true } },
       { path: "/auth/register", component: RegisterPage, meta: { guestOnly: true } },
       { path: "/app/dashboard", component: DashboardPage, meta: { requiresAuth: true } },
+      { path: "/app/projects/:projectId/dashboard", component: DashboardPage, meta: { requiresAuth: true } },
       { path: "/app/projects", component: ProjectsPage, meta: { requiresAuth: true } },
       { path: "/app/projects/:projectId/test-cases", component: TestCasesPage, meta: { requiresAuth: true } },
       { path: "/app/projects/:projectId/test-runs", component: TestRunsPage, meta: { requiresAuth: true } },

@@ -5,7 +5,7 @@ import { RouterLink, useRouter } from "vue-router";
 import { useAuthStore } from "../app/stores/auth";
 
 const navigationItems = [
-  { label: "dashboard", to: "/app/dashboard" },
+  { label: "dashboard", to: "/app/projects/demo/dashboard" },
   { label: "projects", to: "/app/projects" },
   { label: "test cases", to: "/app/projects/demo/test-cases" },
   { label: "test runs", to: "/app/projects/demo/test-runs" },

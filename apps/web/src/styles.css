@@ -253,6 +253,89 @@ button:disabled {
   padding-left: 1.25rem;
 }
 
+.dashboard-panels {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-progress {
+  margin: 0 1rem 1rem;
+}
+
+.chart-list {
+  border-top: 1px solid #e5e7eb;
+  display: grid;
+}
+
+.chart-row {
+  align-items: center;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 132px minmax(0, 1fr) 44px;
+  padding: 0.7rem 1rem;
+}
+
+.chart-row + .chart-row {
+  border-top: 1px solid #e5e7eb;
+}
+
+.chart-row span {
+  color: #475569;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.chart-row strong {
+  text-align: right;
+}
+
+.mini-track {
+  background: #e5e7eb;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.mini-track span {
+  background: #0f766e;
+  display: block;
+  height: 100%;
+}
+
+.defect-track span {
+  background: #b91c1c;
+}
+
+.report-preview {
+  display: grid;
+  gap: 1rem;
+}
+
+.report-section {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.report-section h4 {
+  margin: 0;
+}
+
+.report-row {
+  grid-template-columns: 110px minmax(0, 1fr) minmax(160px, 0.8fr);
+}
+
+.html-preview {
+  background: #0f172a;
+  border-radius: 6px;
+  color: #e5e7eb;
+  margin: 0;
+  overflow: auto;
+  padding: 1rem;
+  white-space: pre-wrap;
+}
+
 .table-surface {
   overflow: hidden;
 }
@@ -988,6 +1071,7 @@ button:disabled {
   .metric-grid,
   .execution-panel,
   .kanban,
+  .dashboard-panels,
   .project-layout {
     grid-template-columns: 1fr;
   }
@@ -996,11 +1080,16 @@ button:disabled {
   .project-row,
   .suite-row,
   .case-row,
+  .report-row,
   .step-row,
   .run-row,
   .run-item-row,
   .case-picker-row {
     grid-template-columns: 88px minmax(0, 1fr);
+  }
+
+  .chart-row {
+    grid-template-columns: 112px minmax(0, 1fr) 36px;
   }
 
   .table-row span:last-child {

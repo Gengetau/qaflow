@@ -488,3 +488,26 @@ Notes:
 
 Next loop:
 - Loop 19: Dashboard and Reports Frontend.
+
+## Loop 19: Dashboard and Reports Frontend
+
+Implemented:
+- Added frontend reports API client for dashboard aggregates, report summary, test run report, and HTML export.
+- Reworked the dashboard page to load project metrics from the backend and render pass rate, defect status distribution, and run progress charts.
+- Reworked the reports page to load summary data, preview the latest test run report, list failed cases and linked defects, and request HTML export.
+- Added project dashboard route at `/app/projects/:projectId/dashboard` and updated the demo dashboard navigation path.
+- Added frontend coverage for dashboard metrics/charts and report preview/export behavior.
+
+Checks run:
+- Red: `pnpm exec vitest run src/pages/DashboardPage.spec.ts src/pages/ReportsPage.spec.ts` failed before dynamic dashboard/report UI existed.
+- Green: `pnpm exec vitest run src/pages/DashboardPage.spec.ts src/pages/ReportsPage.spec.ts`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- Pass: frontend tests, lint/typecheck, and production build completed successfully.
+
+Next loop:
+- Loop 20: OpenAPI TypeScript Client.
