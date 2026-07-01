@@ -38,5 +38,8 @@ Key constraints:
 - Defect states are `OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`, and `REOPENED`.
 - Defect comments belong to one defect and cascade when the defect is deleted.
 - Deleting a project cascades to its defects and comments.
+- Attachments belong to one project and exactly one evidence target: either a defect or a test run item.
+- Attachment files are stored under the configured local upload root; the database stores sanitized file metadata and a relative storage path.
+- Attachment content types are limited to `image/png`, `image/jpeg`, `image/webp`, `application/pdf`, and `text/plain`.
 - Protected resources must be scoped through workspace membership.
 - Status transitions are enforced in the service layer and supported by database constraints where practical.

@@ -52,6 +52,7 @@ class DatabaseMigrationTest {
             "test_run_items",
             "defects",
             "defect_comments",
+            "attachments",
             "activity_logs");
   }
 

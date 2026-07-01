@@ -429,3 +429,37 @@ Notes:
 
 Next loop:
 - Loop 17: Attachments.
+
+## Loop 17: Attachments
+
+Implemented:
+- Added the Attachment JPA model and `V7__attachments.sql` migration.
+- Added local file storage under `qaflow.upload-root` with sanitized file names and relative storage paths.
+- Added multipart upload for exactly one defect or test run item.
+- Added attachment list endpoints for defects and test run items.
+- Added authorized download endpoint that serves files through the API instead of exposing storage paths.
+- Enforced upload authorization, 10 MB file limit, allowed content types, and target/project consistency.
+- Added evidence upload/list UI to the defect detail panel.
+- Updated API and data model docs for attachment behavior.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=AttachmentControllerIntegrationTest test` failed with 404 before attachment APIs existed.
+- Green: `./mvnw.cmd -Dtest=AttachmentControllerIntegrationTest test`
+- Red: `pnpm exec vitest run src/pages/DefectsPage.spec.ts` failed before attachment UI existed.
+- Green: `pnpm exec vitest run src/pages/DefectsPage.spec.ts`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- pass
+
+Notes:
+- Backend checks are run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 18: Dashboard and Reports Backend.

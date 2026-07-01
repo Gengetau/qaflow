@@ -499,6 +499,10 @@ button:disabled {
   border-top: 1px solid #e5e7eb;
 }
 
+.attachment-section {
+  border-top: 1px solid #e5e7eb;
+}
+
 .flush-heading {
   padding-bottom: 0.5rem;
 }
@@ -514,11 +518,56 @@ button:disabled {
   padding: 0.8rem 1rem;
 }
 
+.attachment-row {
+  align-items: center;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+}
+
+.attachment-row strong,
+.attachment-row small {
+  display: block;
+}
+
+.attachment-row small {
+  color: #64748b;
+}
+
+.attachment-row a {
+  color: #155e75;
+  font-weight: 900;
+}
+
 .comment-form {
   border-top: 1px solid #e5e7eb;
   display: grid;
   gap: 0.75rem;
   padding: 1rem;
+}
+
+.attachment-upload-form {
+  border-top: 1px solid #e5e7eb;
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.attachment-upload-form label {
+  color: #334155;
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 800;
+}
+
+.attachment-upload-form input {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #17202a;
+  min-height: 42px;
+  padding: 0.55rem 0.7rem;
 }
 
 .defect-editor {

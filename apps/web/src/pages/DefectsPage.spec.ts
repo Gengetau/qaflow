@@ -46,6 +46,18 @@ const resolvedDefect = {
   comments: []
 };
 
+const attachment = {
+  id: "attachment-1",
+  projectId: "project-1",
+  defectId: "defect-1",
+  testRunItemId: null,
+  uploadedBy: "user-1",
+  fileName: "payment failure.txt",
+  contentType: "text/plain",
+  fileSize: 15,
+  createdAt: "2026-07-01T00:30:00Z"
+};
+
 function response(body: unknown) {
   return Promise.resolve({
     ok: true,
@@ -100,10 +112,14 @@ describe("DefectsPage", () => {
 
   it("loads defects and groups them by status on the board", async () => {
     const fetchMock = vi.fn((input: Parameters<typeof fetch>[0]) => {
-      if (String(input) === "/api/projects/project-1/defects") {
+      const url = String(input);
+      if (url === "/api/projects/project-1/defects") {
         return response([defect, resolvedDefect]);
       }
-      throw new Error(`Unexpected request: ${String(input)}`);
+      if (url === "/api/defects/defect-1/attachments") {
+        return response([attachment]);
+      }
+      throw new Error(`Unexpected request: ${url}`);
     });
     vi.stubGlobal("fetch", fetchMock);
 
@@ -119,6 +135,7 @@ describe("DefectsPage", () => {
     expect(wrapper.get('[data-test="defect-board-RESOLVED"]').text()).toContain("Dashboard pass rate rounding");
     expect(wrapper.get('[data-test="defect-detail"]').text()).toContain("Retrying payment leaves the order pending.");
     expect(wrapper.get('[data-test="defect-detail"]').text()).toContain("Reproduced against the release candidate.");
+    expect(wrapper.get('[data-test="defect-attachments"]').text()).toContain("payment failure.txt");
   });
 
   it("creates and edits a project defect", async () => {
@@ -146,6 +163,9 @@ describe("DefectsPage", () => {
       }
       if (url === "/api/projects/project-1/defects" && init?.method === "POST") {
         return response(createdDefect);
+      }
+      if (url === "/api/defects/defect-3/attachments") {
+        return response([]);
       }
       if (url === "/api/defects/defect-3" && init?.method === "PATCH") {
         return response(editedDefect);
@@ -203,6 +223,9 @@ describe("DefectsPage", () => {
       if (url === "/api/projects/project-1/defects") {
         return response([defect]);
       }
+      if (url === "/api/defects/defect-1/attachments") {
+        return response([]);
+      }
       if (url === "/api/defects/defect-1/transition" && init?.method === "POST") {
         return response(inProgressDefect);
       }
@@ -238,5 +261,45 @@ describe("DefectsPage", () => {
       })
     );
     expect(wrapper.get('[data-test="defect-detail"]').text()).toContain("Backend logs attached to the ticket.");
+  });
+
+  it("uploads evidence attachments for the selected defect", async () => {
+    const uploadedAttachment = {
+      ...attachment,
+      id: "attachment-2",
+      fileName: "checkout-log.txt"
+    };
+    const fetchMock = vi.fn((input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
+      const url = String(input);
+      if (url === "/api/projects/project-1/defects") {
+        return response([defect]);
+      }
+      if (url === "/api/defects/defect-1/attachments") {
+        return response([]);
+      }
+      if (url === "/api/attachments" && init?.method === "POST") {
+        return response(uploadedAttachment);
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const wrapper = await mountPage();
+    const file = new Blob(["gateway timeout"], { type: "text/plain" }) as Blob & { name: string };
+    Object.defineProperty(file, "name", { value: "checkout-log.txt" });
+    const input = wrapper.get('[data-test="attachment-file-input"]');
+    Object.defineProperty(input.element, "files", { value: [file], configurable: true });
+    await input.trigger("change");
+    await wrapper.get('[data-test="attachment-upload-form"]').trigger("submit");
+    await flushPromises();
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/attachments",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.any(FormData)
+      })
+    );
+    expect(wrapper.get('[data-test="defect-attachments"]').text()).toContain("checkout-log.txt");
   });
 });

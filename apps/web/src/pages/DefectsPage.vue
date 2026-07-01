@@ -3,6 +3,12 @@ import { storeToRefs } from "pinia";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import {
+  listDefectAttachments,
+  uploadAttachment,
+  type Attachment,
+  type UploadableFile
+} from "../app/api/attachments";
+import {
   addDefectComment,
   createProjectDefect,
   getDefect,
@@ -42,6 +48,9 @@ const editorOpen = ref(false);
 const editingDefectId = ref("");
 const transitionTarget = ref("" as "" | DefectStatus);
 const commentBody = ref("");
+const attachments = ref<Attachment[]>([]);
+const loadingAttachments = ref(false);
+const attachmentFile = ref<UploadableFile | null>(null);
 
 const defectForm = reactive({
   title: "",
@@ -91,6 +100,14 @@ watch(selectedDefect, (defect) => {
   transitionTarget.value = defect?.status ?? "";
 });
 
+watch(selectedDefectId, (defectId) => {
+  attachments.value = [];
+  attachmentFile.value = null;
+  if (defectId) {
+    void loadAttachments(defectId);
+  }
+});
+
 async function loadDefects() {
   if (!token.value) {
     defects.value = [];
@@ -115,6 +132,23 @@ async function loadDefects() {
     pageError.value = error instanceof Error ? error.message : "Defects could not be loaded.";
   } finally {
     loading.value = false;
+  }
+}
+
+async function loadAttachments(defectId: string) {
+  if (!token.value) {
+    attachments.value = [];
+    return;
+  }
+
+  loadingAttachments.value = true;
+  pageError.value = "";
+  try {
+    attachments.value = await listDefectAttachments(token.value, defectId);
+  } catch (error) {
+    pageError.value = error instanceof Error ? error.message : "Attachments could not be loaded.";
+  } finally {
+    loadingAttachments.value = false;
   }
 }
 
@@ -184,6 +218,33 @@ async function transitionSelectedDefect(event: Event) {
   } catch (error) {
     pageError.value = error instanceof Error ? error.message : "Defect status could not be changed.";
     transitionTarget.value = selectedDefect.value.status;
+  } finally {
+    submitting.value = false;
+  }
+}
+
+function selectAttachmentFile(event: Event) {
+  const target = event.target as unknown as { files?: ArrayLike<UploadableFile> };
+  attachmentFile.value = target.files?.[0] ?? null;
+}
+
+async function uploadSelectedAttachment() {
+  if (!token.value || !selectedDefect.value || !attachmentFile.value) {
+    return;
+  }
+
+  submitting.value = true;
+  pageError.value = "";
+  try {
+    const uploaded = await uploadAttachment(token.value, {
+      projectId: selectedDefect.value.projectId,
+      defectId: selectedDefect.value.id,
+      file: attachmentFile.value
+    });
+    attachments.value = [...attachments.value, uploaded];
+    attachmentFile.value = null;
+  } catch (error) {
+    pageError.value = error instanceof Error ? error.message : "Attachment could not be uploaded.";
   } finally {
     submitting.value = false;
   }
@@ -331,6 +392,44 @@ function replaceDefect(updatedDefect: Defect, prepend = false) {
                 </option>
               </select>
             </label>
+          </div>
+
+          <div class="attachment-section" data-test="defect-attachments">
+            <div class="panel-heading flush-heading">
+              <div>
+                <p class="eyebrow">Evidence</p>
+                <h3>{{ attachments.length }} files</h3>
+              </div>
+            </div>
+            <div v-if="loadingAttachments" class="empty-state compact-empty">Loading attachments...</div>
+            <div v-else-if="attachments.length === 0" class="empty-state compact-empty">No evidence uploaded</div>
+            <article v-for="attachment in attachments" :key="attachment.id" class="attachment-row">
+              <span>
+                <strong>{{ attachment.fileName }}</strong>
+                <small>{{ attachment.contentType }} - {{ attachment.fileSize }} bytes</small>
+              </span>
+              <a :href="`/api/attachments/${attachment.id}/download`">Download</a>
+            </article>
+
+            <form
+              v-if="canWrite"
+              class="attachment-upload-form"
+              data-test="attachment-upload-form"
+              @submit.prevent="uploadSelectedAttachment"
+            >
+              <label>
+                Evidence file
+                <input
+                  data-test="attachment-file-input"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,application/pdf,text/plain"
+                  @change="selectAttachmentFile"
+                />
+              </label>
+              <div class="button-row end">
+                <button type="submit" :disabled="submitting || !attachmentFile">Upload evidence</button>
+              </div>
+            </form>
           </div>
 
           <div class="comment-section">

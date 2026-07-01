@@ -65,8 +65,16 @@ Invalid test run transitions return `400`. `VIEWER` users can read run state but
 
 Defect severities are `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL`. Priorities are `LOW`, `MEDIUM`, `HIGH`, and `URGENT`. State transitions are enforced in the service layer: `OPEN -> IN_PROGRESS -> RESOLVED -> CLOSED`, with `RESOLVED` or `CLOSED` allowed to move to `REOPENED`, and `REOPENED -> IN_PROGRESS`.
 
-## Attachments, Reports
+## Attachments
 
-- `POST /api/attachments`
+- `POST /api/attachments`: upload multipart evidence for exactly one defect or test run item. Parameters are `projectId`, optional `defectId`, optional `testRunItemId`, and `file`; requires `OWNER` or `TESTER`.
+- `GET /api/defects/{defectId}/attachments`: list evidence attached to a defect; requires workspace membership.
+- `GET /api/test-run-items/{itemId}/attachments`: list evidence attached to a run item; requires workspace membership.
+- `GET /api/attachments/{attachmentId}/download`: download evidence through the authorized API; requires workspace membership.
+
+Allowed attachment content types are `image/png`, `image/jpeg`, `image/webp`, `application/pdf`, and `text/plain`. Maximum file size is 10 MB. Downloads are served through the API; storage paths are never exposed directly.
+
+## Reports
+
 - `GET /api/projects/{projectId}/dashboard`
 - `POST /api/projects/{projectId}/reports/export`
