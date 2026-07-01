@@ -10,8 +10,22 @@ This repository is being built from the supplied `qaflow-design` and `qaflow-loo
 
 ## Quick Start
 
+Docker Compose uses built-in defaults, so copying `.env.example` is optional. Copy it when you want to change ports, credentials, CORS origins, or the frontend API URL.
+
 ```powershell
+Copy-Item .env.example .env
 docker compose up --build
+```
+
+The compose stack starts PostgreSQL, the Spring Boot API with the `dev,demo` profiles, and the built Vue app served by nginx.
+
+PowerShell helpers are also available:
+
+```powershell
+.\scripts\dev-up.ps1
+.\scripts\dev-up.ps1 -Detached
+.\scripts\dev-smoke.ps1
+.\scripts\dev-down.ps1
 ```
 
 Local backend:

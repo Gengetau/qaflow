@@ -33,4 +33,9 @@ pnpm e2e:install
 pnpm e2e
 ```
 
-CI currently runs frontend lint, typecheck, Vitest, and build. Playwright is documented as a manual local gate until the Docker-backed full-stack startup is finalized.
+CI currently runs frontend lint, typecheck, Vitest, and build. Playwright remains a manual local browser gate. For Docker-backed full-stack smoke testing, start compose and run:
+
+```powershell
+.\scripts\dev-up.ps1 -Detached
+.\scripts\dev-smoke.ps1
+```

@@ -29,4 +29,4 @@ Browser
 
 - `postgres`: PostgreSQL database.
 - `api`: Spring Boot backend on port 8080.
-- `web`: Vite-built frontend on port 5173 in development.
+- `web`: Vite-built frontend served by nginx on port 5173.

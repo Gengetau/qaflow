@@ -2,15 +2,15 @@ services:
   postgres:
     image: postgres:17
     environment:
-      POSTGRES_DB: qaflow
-      POSTGRES_USER: qaflow
-      POSTGRES_PASSWORD: qaflow
+      POSTGRES_DB: ${POSTGRES_DB:-qaflow}
+      POSTGRES_USER: ${POSTGRES_USER:-qaflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qaflow}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U qaflow -d qaflow"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-qaflow} -d ${POSTGRES_DB:-qaflow}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -19,28 +19,44 @@ services:
     build:
       context: ./apps/api
     environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/qaflow
-      SPRING_DATASOURCE_USERNAME: qaflow
-      SPRING_DATASOURCE_PASSWORD: qaflow
-      QAFLOW_UPLOAD_ROOT: /app/data/uploads
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev,demo}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-qaflow}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-qaflow}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-qaflow}
+      QAFLOW_UPLOAD_ROOT: ${QAFLOW_UPLOAD_ROOT:-/app/data/uploads}
+      QAFLOW_CORS_ALLOWED_ORIGINS: ${QAFLOW_CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
     ports:
-      - "8080:8080"
+      - "${API_PORT:-8080}:8080"
     volumes:
       - uploads:/app/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
 
   web:
     build:
       context: ./apps/web
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
     environment:
-      VITE_API_BASE_URL: http://localhost:8080
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
     ports:
-      - "5173:5173"
+      - "${WEB_PORT:-5173}:5173"
     depends_on:
-      - api
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5173/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
 
 volumes:
   postgres_data:

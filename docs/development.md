@@ -28,6 +28,32 @@ Expected Java output should report Temurin/OpenJDK 21.x for both `java` and `jav
 
 Docker Desktop may be reachable from the Docker CLI while Testcontainers cannot use the Windows named-pipe endpoint from Java. Docker-dependent tests should use `@Testcontainers(disabledWithoutDocker = true)` so they run in compatible Docker environments and skip locally when Java cannot access Docker.
 
+## Docker Compose Full Stack
+
+The default compose stack is intended to be a one-command local runtime:
+
+```powershell
+docker compose up --build
+```
+
+It starts:
+
+- PostgreSQL on `localhost:5432`
+- API on `http://localhost:8080`
+- Web on `http://localhost:5173`
+
+Compose defaults enable the `dev,demo` Spring profiles, so the demo accounts are seeded automatically. Copy `.env.example` to `.env` only when you need to override ports, database credentials, CORS origins, or `VITE_API_BASE_URL`.
+
+PowerShell helpers:
+
+```powershell
+.\scripts\dev-up.ps1 -Detached
+.\scripts\dev-smoke.ps1
+.\scripts\dev-down.ps1
+```
+
+The smoke script checks API health, the web root, and demo owner login.
+
 ## Demo Seed Profile
 
 Run the backend with the `demo` profile to seed local demo data:

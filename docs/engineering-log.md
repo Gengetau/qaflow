@@ -596,4 +596,38 @@ Notes:
 - CI continues to run the standard frontend gates. Playwright is documented as a manual local E2E gate until the full-stack Docker startup is finalized.
 
 Next loop:
-- Loop 23: Docker Polish and Local Full Stack.
+- Loop 23: Docker and Local DX Polish.
+
+## Loop 23: Docker and Local DX Polish
+
+Implemented:
+- Added `.env.example` for compose ports, database credentials, demo profile, CORS origins, upload root, and frontend API URL.
+- Parameterized `docker-compose.yml` and enabled `dev,demo` by default for one-command demo startup.
+- Added API and web service health checks and made the web service wait for a healthy API.
+- Changed the web container to build the Vue app and serve it with nginx on port 5173.
+- Added Docker build context ignores for API and web.
+- Added PowerShell helpers for compose up/down and full-stack smoke checks.
+- Made backend CORS origins configurable while defaulting to `localhost:5173` and `127.0.0.1:5173`.
+- Documented Docker quick start, smoke checks, and nginx runtime behavior.
+
+Checks run:
+- `docker compose config`
+- `./mvnw.cmd test`
+- `docker compose up --build -d`
+- `./scripts/dev-smoke.ps1`
+- Browser smoke: real nginx web login against real Spring API returned `QAFlow Demo Workspace`.
+- `docker compose down`
+- `./mvnw.cmd verify`
+
+Result:
+- Pass: compose config validates with default env values.
+- Pass: compose build/up starts PostgreSQL, healthy API, and nginx web service.
+- Pass: API health, web root, demo owner login, and real browser login work against the compose stack.
+- Pass: backend test/verify completed with 13 tests, 0 failures, 1 local Docker-dependent Testcontainers migration test skipped.
+
+Notes:
+- Docker Desktop was not initially running; after starting Docker Desktop, the Linux engine became available and compose verification passed.
+- Testcontainers still cannot use Docker Desktop from Java in this Windows environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 24: Documentation Polish.
