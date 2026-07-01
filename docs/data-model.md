@@ -27,5 +27,11 @@ Key constraints:
 - Test case keys are unique within a project.
 - Test case steps belong to one test case and are ordered by `step_order`.
 - Deleting a test case cascades to its steps.
+- Test runs belong to one project and contain selected test run items.
+- Test run states are `PLANNED`, `IN_PROGRESS`, `COMPLETED`, and `CANCELLED`.
+- Test run details can be edited only while `PLANNED`.
+- Test run execution items reference test cases and persist `UNTESTED`, `PASSED`, `FAILED`, `BLOCKED`, or `SKIPPED` results.
+- Test run item results can be changed only while the parent run is `IN_PROGRESS`.
+- Deleting a project cascades to its test runs and run items.
 - Protected resources must be scoped through workspace membership.
 - Status transitions are enforced in the service layer and supported by database constraints where practical.

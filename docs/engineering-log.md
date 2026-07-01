@@ -322,3 +322,29 @@ Notes:
 
 Next loop:
 - Loop 13: Test Runs Backend.
+
+## Loop 13: Test Runs Backend
+
+Implemented:
+- Added TestRun and TestRunItem JPA models, repositories, DTOs, service, and REST controller.
+- Added project-scoped test run creation from selected test cases.
+- Added planned run detail updates, start/complete transitions, and execution result updates.
+- Enforced transition rules: only planned runs can be updated or started, only in-progress runs can be completed or executed.
+- Added `V5__test_runs.sql` for test run and run item persistence.
+- Updated API and data model docs for test run execution.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=TestRunControllerIntegrationTest test` failed with 404 before the test run APIs existed.
+- Green: `./mvnw.cmd -Dtest=TestRunControllerIntegrationTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- pass
+
+Notes:
+- Backend checks were run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 14: Test Run Execution Frontend.

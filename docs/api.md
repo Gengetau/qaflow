@@ -40,11 +40,21 @@ Workspace roles are `OWNER`, `TESTER`, and `VIEWER`. Backend permission checks e
 - `PATCH /api/test-cases/{testCaseId}`: update test case fields and replace its ordered steps; requires `OWNER` or `TESTER`.
 - `DELETE /api/test-cases/{testCaseId}`: delete a test case and its steps; requires `OWNER` or `TESTER`.
 
-## Execution, Defects, Attachments, Reports
+## Test Run Execution
 
-- `GET /api/projects/{projectId}/test-runs`
-- `POST /api/projects/{projectId}/test-runs`
-- `PATCH /api/test-run-items/{itemId}/result`
+- `GET /api/projects/{projectId}/test-runs`: list test runs for a project; requires workspace membership.
+- `POST /api/projects/{projectId}/test-runs`: create a planned run from selected `testCaseIds`; requires `OWNER` or `TESTER`.
+- `GET /api/test-runs/{testRunId}`: return run detail with items; requires workspace membership.
+- `PATCH /api/test-runs/{testRunId}`: update planned run `name` and `description`; requires `OWNER` or `TESTER`.
+- `POST /api/test-runs/{testRunId}/start`: transition a `PLANNED` run to `IN_PROGRESS`; requires `OWNER` or `TESTER`.
+- `POST /api/test-runs/{testRunId}/complete`: transition an `IN_PROGRESS` run to `COMPLETED`; requires `OWNER` or `TESTER`.
+- `GET /api/test-runs/{testRunId}/items`: list execution items and persisted results; requires workspace membership.
+- `PATCH /api/test-run-items/{itemId}/result`: set `PASSED`, `FAILED`, `BLOCKED`, or `SKIPPED` while the run is in progress; requires `OWNER` or `TESTER`.
+
+Invalid test run transitions return `400`. `VIEWER` users can read run state but cannot create, update, start, complete, or execute runs.
+
+## Defects, Attachments, Reports
+
 - `POST /api/test-run-items/{itemId}/defects`
 - `GET /api/projects/{projectId}/defects`
 - `POST /api/attachments`

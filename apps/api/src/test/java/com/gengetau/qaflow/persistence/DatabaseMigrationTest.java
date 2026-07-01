@@ -48,6 +48,8 @@ class DatabaseMigrationTest {
             "test_suites",
             "test_cases",
             "test_case_steps",
+            "test_runs",
+            "test_run_items",
             "activity_logs");
   }
 
