@@ -4,11 +4,13 @@ All API routes use the `/api` prefix.
 
 ## Auth
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `POST /api/auth/refresh`
-- `POST /api/auth/logout`
-- `GET /api/auth/me`
+- `POST /api/auth/register`: create a user, default workspace, OWNER membership, access token, and refresh token.
+- `POST /api/auth/login`: authenticate with email/password and issue fresh tokens.
+- `POST /api/auth/refresh`: rotate a valid refresh token and issue a new access token.
+- `POST /api/auth/logout`: revoke a refresh token for an authenticated user.
+- `GET /api/auth/me`: return the current authenticated user and workspace memberships.
+
+Auth tokens use `Authorization: Bearer <accessToken>`. Refresh tokens are stored server-side as SHA-256 hashes.
 
 ## Workspaces
 

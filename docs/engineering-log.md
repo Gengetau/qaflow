@@ -140,3 +140,31 @@ Notes:
 
 Next loop:
 - Loop 6: Auth Backend.
+## Loop 6: Auth Backend
+
+Implemented:
+- Installed Eclipse Temurin 21 JDK and verified `java -version` / `javac -version` with Java 21.
+- Added Java 21 setup notes to README and `docs/development.md`.
+- Added User, Workspace, WorkspaceMember, and RefreshToken JPA models and repositories.
+- Added registration, login, refresh token rotation, logout token revocation, and `/api/auth/me`.
+- Added JWT access-token issuing and a Bearer-token authentication filter.
+- Added `V2__auth_refresh_tokens.sql` for refresh token persistence.
+- Added Auth integration tests covering unauthenticated `/me`, register, authenticated `/me`, login, and refresh.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=AuthControllerIntegrationTest test` failed before implementation with 403 responses.
+- Green: `./mvnw.cmd -Dtest=AuthControllerIntegrationTest test` passed after implementation.
+- `java -version`
+- `javac -version`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- pass
+
+Notes:
+- Commands were run with `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows named-pipe environment, so `DatabaseMigrationTest` skips via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 7: RBAC and Security.
