@@ -17,8 +17,14 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
+}
+
+textarea {
+  resize: vertical;
 }
 
 button {
@@ -161,6 +167,34 @@ button:disabled {
   max-width: 760px;
 }
 
+.action-heading,
+.panel-heading,
+.suite-toolbar,
+.button-row {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.panel-heading,
+.suite-toolbar {
+  padding: 1rem;
+}
+
+.panel-heading h3,
+.suite-toolbar h3,
+.empty-state h3 {
+  margin: 0;
+}
+
+.panel-heading p,
+.suite-toolbar p,
+.empty-state p {
+  color: #64748b;
+  margin-bottom: 0;
+}
+
 .page-heading p {
   color: #4b5563;
 }
@@ -248,6 +282,11 @@ button:disabled {
   color: #166534;
 }
 
+.status.archived {
+  background: #e5e7eb;
+  color: #374151;
+}
+
 .status.failed,
 .priority.high {
   background: #fee2e2;
@@ -327,6 +366,151 @@ button:disabled {
   padding: 0.55rem 0.7rem;
 }
 
+.projects-page {
+  gap: 1rem;
+}
+
+.project-layout {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.25fr);
+}
+
+.project-list-panel,
+.project-detail-panel {
+  min-width: 0;
+}
+
+.project-row,
+.suite-row {
+  align-items: center;
+  grid-template-columns: 96px minmax(0, 1fr) 120px;
+}
+
+.selectable-row {
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: left;
+  width: 100%;
+}
+
+.selectable-row:hover,
+.selectable-row.selected {
+  background: #ecfeff;
+}
+
+.empty-state {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+}
+
+.detail-empty {
+  min-height: 280px;
+  place-content: center;
+}
+
+.suite-toolbar {
+  border-top: 1px solid #e5e7eb;
+}
+
+.suite-row small,
+.suite-row strong {
+  display: block;
+}
+
+.suite-row small {
+  color: #64748b;
+}
+
+.secondary-button,
+.ghost-button,
+.ghost-danger-button,
+.danger-button {
+  border: 1px solid transparent;
+}
+
+.secondary-button {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #155e75;
+}
+
+.ghost-button,
+.ghost-danger-button {
+  background: transparent;
+  padding: 0.4rem 0.55rem;
+}
+
+.ghost-button {
+  color: #155e75;
+}
+
+.danger-button,
+.ghost-danger-button {
+  color: #991b1b;
+}
+
+.danger-button {
+  background: #fee2e2;
+}
+
+.button-row {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.button-row.end {
+  justify-content: flex-end;
+}
+
+.modal-backdrop {
+  align-items: center;
+  background: rgba(15, 23, 42, 0.38);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 10;
+}
+
+.modal {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.22);
+  display: grid;
+  gap: 0.85rem;
+  max-height: calc(100vh - 2rem);
+  max-width: 520px;
+  overflow: auto;
+  padding: 1rem;
+  width: min(100%, 520px);
+}
+
+.modal label {
+  color: #334155;
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 800;
+}
+
+.modal input,
+.modal select,
+.modal textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #17202a;
+  min-height: 42px;
+  padding: 0.55rem 0.7rem;
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -348,11 +532,14 @@ button:disabled {
 
   .metric-grid,
   .execution-panel,
-  .kanban {
+  .kanban,
+  .project-layout {
     grid-template-columns: 1fr;
   }
 
-  .table-row {
+  .table-row,
+  .project-row,
+  .suite-row {
     grid-template-columns: 88px minmax(0, 1fr);
   }
 

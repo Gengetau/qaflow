@@ -246,3 +246,28 @@ Notes:
 
 Next loop:
 - Loop 10: Projects and Test Suites Frontend.
+
+## Loop 10: Projects and Test Suites Frontend
+
+Implemented:
+- Added a project and suite API client for authenticated `/api/projects` and `/api/suites` calls.
+- Replaced the static projects page with a workspace-scoped project list, project detail panel, project create/edit/delete dialog flow, and suite create/edit/delete management UI.
+- Added loading, error, and empty states for projects and suites.
+- Added frontend tests covering project/suite loading and creating a project from the page dialog.
+
+Checks run:
+- Red: `pnpm exec vitest run src/pages/ProjectsPage.spec.ts` failed while the page still rendered static sample data and never called the API.
+- Green: `pnpm exec vitest run src/pages/ProjectsPage.spec.ts`
+- `pnpm test`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm build`
+
+Result:
+- pass
+
+Notes:
+- Frontend checks were run under the local Windows Node 22 environment. The GitHub workflow still validates the same app under Node 24.
+
+Next loop:
+- Loop 11: Test Cases Backend.
