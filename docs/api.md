@@ -34,8 +34,11 @@ Workspace roles are `OWNER`, `TESTER`, and `VIEWER`. Backend permission checks e
 - `POST /api/projects/{projectId}/suites`: create a suite with `name`, optional `description`, and `sortOrder`; requires `OWNER` or `TESTER`.
 - `PATCH /api/suites/{suiteId}`: update suite details; requires `OWNER` or `TESTER`.
 - `DELETE /api/suites/{suiteId}`: delete a suite; requires `OWNER` or `TESTER`.
-- `GET /api/projects/{projectId}/test-cases`
-- `POST /api/projects/{projectId}/test-cases`
+- `GET /api/projects/{projectId}/test-cases?query=&status=&priority=&suiteId=&page=0&size=20`: list test cases using `{ items, totalItems, totalPages, page, size }`; requires workspace membership.
+- `POST /api/projects/{projectId}/test-cases`: create a test case with optional `suiteId`, `caseKey`, content fields, enum fields, and ordered `steps`; requires `OWNER` or `TESTER`.
+- `GET /api/test-cases/{testCaseId}`: return test case detail with steps; requires workspace membership.
+- `PATCH /api/test-cases/{testCaseId}`: update test case fields and replace its ordered steps; requires `OWNER` or `TESTER`.
+- `DELETE /api/test-cases/{testCaseId}`: delete a test case and its steps; requires `OWNER` or `TESTER`.
 
 ## Execution, Defects, Attachments, Reports
 

@@ -271,3 +271,29 @@ Notes:
 
 Next loop:
 - Loop 11: Test Cases Backend.
+
+## Loop 11: Test Cases Backend
+
+Implemented:
+- Added TestCase and TestCaseStep JPA models with priority, type, and status enums.
+- Added test case create, list, detail, update, and delete APIs.
+- Added ordered step persistence through create/update payloads.
+- Added filtering and pagination for project-scoped test case lists.
+- Enforced unique test case keys per project and project membership/write authorization.
+- Added `V4__test_cases.sql` for test cases and steps.
+
+Checks run:
+- Red: `./mvnw.cmd -Dtest=TestCaseControllerIntegrationTest test` failed with 404 before the test case APIs existed.
+- Green: `./mvnw.cmd -Dtest=TestCaseControllerIntegrationTest test`
+- `./mvnw.cmd test`
+- `./mvnw.cmd verify`
+
+Result:
+- pass
+
+Notes:
+- Backend checks were run with Java 21 via `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot`.
+- Testcontainers still cannot access Docker Desktop from Java in this Windows named-pipe environment, so `DatabaseMigrationTest` remains skipped locally via `disabledWithoutDocker`.
+
+Next loop:
+- Loop 12: Test Cases Frontend.

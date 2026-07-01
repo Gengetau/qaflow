@@ -25,5 +25,7 @@ Key constraints:
 - Test suites belong to a project and are ordered by `sort_order` then name.
 - Deleting a project cascades to its suites and project activity logs.
 - Test case keys are unique within a project.
+- Test case steps belong to one test case and are ordered by `step_order`.
+- Deleting a test case cascades to its steps.
 - Protected resources must be scoped through workspace membership.
 - Status transitions are enforced in the service layer and supported by database constraints where practical.

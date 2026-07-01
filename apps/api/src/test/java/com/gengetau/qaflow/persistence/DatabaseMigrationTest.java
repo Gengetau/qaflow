@@ -46,6 +46,8 @@ class DatabaseMigrationTest {
             "workspace_members",
             "projects",
             "test_suites",
+            "test_cases",
+            "test_case_steps",
             "activity_logs");
   }
 
