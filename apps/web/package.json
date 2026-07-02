@@ -11,6 +11,7 @@
     "api:generate": "node ./scripts/generate-openapi-client.mjs ../../openapi/qaflow.openapi.json ./src/app/api/generated/qaflowClient.ts",
     "dev": "vite --host 0.0.0.0",
     "dev:e2e": "vite --host 127.0.0.1 --port 5173",
+    "screenshots:demo": "node ./scripts/capture-demo-screenshots.mjs",
     "build": "vue-tsc --noEmit && vite build",
     "typecheck": "vue-tsc --noEmit",
     "lint": "vue-tsc --noEmit",

@@ -16,7 +16,7 @@ jobs:
           java-version: "21"
       - name: Test backend
         working-directory: apps/api
-        run: mvn test
+        run: ./mvnw verify
 
   frontend:
     runs-on: ubuntu-latest
