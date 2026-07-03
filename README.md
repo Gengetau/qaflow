@@ -2,7 +2,11 @@
 
 [![CI](https://github.com/Gengetau/qaflow/actions/workflows/ci.yml/badge.svg)](https://github.com/Gengetau/qaflow/actions/workflows/ci.yml)
 
+## Project Overview
+
 QAFlow is a full-stack QA management platform for organizing test cases, executing test runs, tracking defects, attaching evidence, and generating project quality reports.
+
+## Technology Stack
 
 It is built as a portfolio-grade internal QA tool, not a toy CRUD app. The target stack is Java 21 + Spring Boot, Vue 3 + TypeScript, PostgreSQL, Flyway, JWT/RBAC, Docker Compose, and automated quality gates.
 
@@ -19,7 +23,7 @@ The core workflow is implemented end to end: authentication, workspace roles, pr
 - Operational polish: Java 21, Docker Compose, nginx-served frontend image, seeded demo profile, local smoke scripts, CI gates, and documented test strategy.
 - Release readiness: the README includes the CI badge, all loop quality gates have passed locally, and the project is ready for the `v1.0.0` tag once the final CI run is green.
 
-## Quick Start
+## Running Locally
 
 Docker Compose uses built-in defaults, so copying `.env.example` is optional. Copy it when you want to change ports, credentials, CORS origins, or the frontend API URL.
 
